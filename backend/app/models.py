@@ -37,6 +37,7 @@ class User(db.Model):
             'disease_document': self.disease_document,
             'status': self.status,
             'qr_code_path': self.qr_code_path,
+            'qr_token': self.qr_token,
             'created_at': self.created_at.isoformat() if self.created_at else None,
         }
 

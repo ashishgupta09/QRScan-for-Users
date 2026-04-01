@@ -14,7 +14,7 @@
 }
 
 .card-header {
-  background: var(--red);
+  background: var(--primary-red);
   padding: 22px 30px;
   display: flex;
   align-items: center;
@@ -217,22 +217,25 @@ body > .card {
 .btn-submit {
   width: 100%;
   padding: var(--spacing-xl);
-  background: var(--red);
+  background: var(--primary-red);
   color: var(--white);
   border: none;
   border-radius: var(--radius);
   font-family: var(--font-secondary);
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   cursor: pointer;
   margin-top: var(--spacing-md);
-  transition: background var(--transition-fast), transform 0.12s, box-shadow var(--transition-fast);
+  transition: var(--transition-fast);
   position: relative;
   overflow: hidden;
 }
 
-.btn-submit:hover { background: var(--red-dark); box-shadow: 0 4px 16px rgba(211,47,47,0.25); }
+.btn-submit:hover { 
+  background: var(--hover-red); 
+  box-shadow: 0 4px 16px rgba(202,38,54,0.25); 
+}
 .btn-submit:active { transform: scale(0.985); }
 .btn-submit:disabled { background: var(--red-mid); cursor: not-allowed; }
 

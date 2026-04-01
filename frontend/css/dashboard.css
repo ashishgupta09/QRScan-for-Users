@@ -22,19 +22,18 @@
 .approvedBox {
     width: 100%;
     min-height: 50px;
-    max-height: 60px;
-    background-color: #9cfaa7;
-    display: flex;
+    background-color: #d1e7dd;
+    display: none;
     align-items: center;
     font-size: clamp(14px, 3vw, 16px);
     border-radius: var(--radius-md);
-    font-weight: 600;
-    color: #1f642f;
+    font-weight: 500;
+    color: #0f5132;
+    border: 1px solid #badbcc;
     justify-content: space-between;
     padding: var(--spacing-lg) var(--spacing-xl);
     box-sizing: border-box;
-    flex-wrap: wrap;
-    gap: var(--spacing-md);
+    margin-bottom: 20px;
 }
 
 .approvedBox .close-btn {
@@ -49,7 +48,8 @@
 }
 
 .approvedBox .close-btn:hover {
-    color: var(--text-dark);
+    color: #0f5132;
+    opacity: 0.8;
 }
 
 /* =========================================================================
@@ -79,24 +79,23 @@
 
 /* Table Header */
 .userTable thead th {
-    height: 40px;
+    height: 45px;
     background: var(--table-header);
-    color: #171717;
-    font-size: clamp(13px, 2.5vw, 16px);
-    font-weight: 700;
+    color: #1a1a1a;
+    font-size: 14px;
+    font-weight: 600;
     text-align: left;
-    padding: var(--spacing-md);
+    padding: 12px 15px;
     white-space: nowrap;
 }
 
 /* Table Body */
 .userTable tbody td {
-    height: 48px;
+    padding: 12px 15px;
     border-bottom: 1px solid var(--border-subtle);
-    font-size: clamp(12px, 2vw, 14px);
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 400;
     color: var(--table-body);
-    padding: var(--spacing-md);
     vertical-align: middle;
     white-space: nowrap;
 }
@@ -122,25 +121,63 @@
     background: rgba(219, 52, 68);
 }
 
-.statusPill {
-    background: rgba(63, 154, 109);
+.statusPill.pending {
+    background: #ffc107;
+    color: #000;
+}
+
+.statusPill.approved {
+    background: #198754;
+    color: #fff;
+}
+
+.statusPill.rejected {
+    background: #dc3545;
+    color: #fff;
 }
 
 /* =========================================================================
    Action Buttons
    ========================================================================= */
-.qrBtn {
-    height: 34px;
-    min-width: 72px;
-    border: 0;
-    border-radius: var(--radius-sm);
-    background: var(--accent-cyan);
-    color: #10303a;
-    font-size: clamp(12px, 2vw, 14px);
+.btn-approve { 
+    background: #198754; 
+    color: white; 
+    border: none; 
+    padding: 6px 12px; 
+    cursor: pointer; 
+    border-radius: 4px; 
+    font-size: 13px; 
     font-weight: 500;
-    padding: 0 var(--spacing-md);
+}
+
+.btn-reject { 
+    background: #dc3545; 
+    color: white; 
+    border: none; 
+    padding: 6px 12px; 
+    cursor: pointer; 
+    border-radius: 4px; 
+    margin-left: 5px; 
+    font-size: 13px; 
+    font-weight: 500;
+}
+
+.qrBtn {
+    height: 32px;
+    min-width: 80px;
+    border: 0;
+    border-radius: 4px;
+    background: #0dcaf0;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 0 12px;
     cursor: pointer;
     white-space: nowrap;
+}
+
+.btn-approve:hover, .btn-reject:hover, .qrBtn:hover {
+    opacity: 0.85;
 }
 
 /* =========================================================================

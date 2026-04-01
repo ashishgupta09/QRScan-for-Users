@@ -90,13 +90,13 @@
 }
 
 .card-header {
-  background: var(--secondary-red);
+  background: var(--primary-red);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-lg);
   text-align: center;
-  padding: var(--spacing-4xl) var(--spacing-4xl) var(--spacing-5xl);
+  padding: var(--spacing-4xl);
 }
 
 .card-header h1 {
@@ -138,19 +138,21 @@
 
 .login-form button {
   width: 100%;
-  background: var(--secondary-red);
+  background: var(--primary-red);
   color: white;
   border: none;
   border-radius: var(--radius-xl);
   padding: var(--spacing-xl) 0;
-  font-size: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: var(--transition);
+  transition: var(--transition-fast);
 }
 
 .login-form button:hover {
   transform: translateY(-1px);
-  background: #bf1d2f;
+  background: var(--hover-red);
+  box-shadow: 0 4px 12px rgba(202,38,54,0.2);
 }
 
 .login-hint {

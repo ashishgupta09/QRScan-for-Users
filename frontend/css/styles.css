@@ -9,6 +9,7 @@
     /* Colors - Primary Palette */
     --primary-red: #ca2636;
     --hover-red: #b31a20;
+    --resqr-pink: #ff4d4d;
     --secondary-red: #dc3546;
     --red-dark: #dc3546;
     --red-light: #ffebee;
@@ -285,6 +286,78 @@ body {
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+/* =========================================================================
+   ResQr Brand Standard Styles
+   ========================================================================= */
+.site-header {
+    background-color: var(--primary-red);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 5%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand-icon {
+    background-color: var(--resqr-pink);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.brand-name {
+    color: white;
+    font-weight: 700;
+    font-size: 1.4rem;
+    letter-spacing: -0.2px;
+}
+
+.site-nav {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.site-nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 0.95rem;
+    opacity: 0.9;
+    transition: var(--transition-fast);
+}
+
+.site-nav a:hover, .site-nav a.active {
+    opacity: 1;
+}
+
+.nav-admin {
+    opacity: 1 !important;
+    font-weight: 500 !important;
+}
+
+#logoutBtn {
+    background: white;
+    color: var(--text-dark) !important;
+    padding: 6px 15px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    opacity: 1 !important;
 }
 
 .container {
