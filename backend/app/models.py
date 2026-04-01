@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 
@@ -37,6 +38,7 @@ class User(db.Model):
             'disease_document': self.disease_document,
             'status': self.status,
             'qr_code_path': self.qr_code_path,
+            'qr_image_url': f"/uploads/qrcodes/{os.path.basename(self.qr_code_path)}" if self.qr_code_path else None,
             'qr_token': self.qr_token,
             'created_at': self.created_at.isoformat() if self.created_at else None,
         }

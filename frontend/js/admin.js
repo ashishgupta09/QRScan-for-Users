@@ -60,7 +60,7 @@ function renderUsers(users) {
             <td>${user.has_disease ? 'Yes' : 'No'}</td>
             <td><span class="pill statusPill ${user.status}">${user.status}</span></td>
             <td>
-                ${user.status === 'approved' ? `<button type="button" class="qrBtn" onclick="viewQR('${user.qr_token}')">View QR</button>` : '—'}
+                ${user.status === 'approved' ? `<button type="button" class="qrBtn" onclick="viewQR('${user.qr_image_url}')">View QR</button>` : '—'}
             </td>
             <td>
                 ${user.status === 'pending' ? 
@@ -100,11 +100,10 @@ async function updateStatus(id, action) {
     }
 }
 
-function viewQR(qrToken) {
-    if (!qrToken) return;
-    const scanUrl = `http://127.0.0.1:5000/api/admin/scan/${qrToken}`;
-    // Simple way to open the scan result (in a real app, maybe show a QR image)
-    window.open(scanUrl, '_blank');
+function viewQR(qrImageUrl) {
+    if (!qrImageUrl) return;
+    const fullUrl = `http://127.0.0.1:5000${qrImageUrl}`;
+    window.open(fullUrl, '_blank');
 }
 
 // Make functions global for onclick events

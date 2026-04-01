@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, render_template
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import check_password_hash
 from .models import db, User, Admin
@@ -122,16 +122,5 @@ def scan_qr(qr_token):
     if user.status != 'approved':
         return jsonify({'error': 'User is not approved. QR code is invalid.'}), 403
 
-    return jsonify({
-        'message': 'User details retrieved successfully',
-        'user': {
-            'name': user.name,
-            'address': user.address,
-            'phone': user.phone,
-            'alternate_phone': user.alternate_phone,
-            'dob': user.dob.isoformat() if user.dob else None,
-            'blood_group': user.blood_group,
-            'has_disease': user.has_disease,
-            'status': user.status,
-        }
-    }), 200
+    # Switch from JSON to a beautiful Scan Result Page
+    return render_template('scan_result.html', user=user)

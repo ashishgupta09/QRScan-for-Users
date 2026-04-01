@@ -46,4 +46,14 @@ def create_app():
     def health():
         return {'status': 'ok', 'app': 'ResQr API', 'version': '1.0.0'}
 
+    @app.route('/uploads/qrcodes/<filename>')
+    def serve_qr(filename):
+        from flask import send_from_directory
+        return send_from_directory(os.path.join(app.config['UPLOAD_FOLDER'], 'qrcodes'), filename)
+
+    @app.route('/uploads/documents/<filename>')
+    def serve_doc(filename):
+        from flask import send_from_directory
+        return send_from_directory(os.path.join(app.config['UPLOAD_FOLDER'], 'documents'), filename)
+
     return app

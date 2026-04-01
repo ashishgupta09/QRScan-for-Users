@@ -72,8 +72,8 @@ function renderProfile(user) {
         qrSection.style.display = 'block';
         const viewQrBtn = document.getElementById('viewQrBtn');
         viewQrBtn.onclick = () => {
-             // Use the redirect to the scan URL
-             window.open(`http://127.0.0.1:5000/api/admin/scan/` + user.qr_token, '_blank');
+             // Open the actual image URL
+             window.open(`http://127.0.0.1:5000` + user.qr_image_url, '_blank');
         };
     } else {
         profileContent.innerHTML += `<p style="color: #666; font-style: italic;">Your QR code will appear here once an admin approves your registration.</p>`;
