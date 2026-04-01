@@ -1,59 +1,19 @@
-:root {
-    --primary-red: #ca2636;
-    --hover-red: #b31a20;
-    --white: #ffffff;
-    --bg-white: #fefefe;
-    --text-dark: #333333;
-    --text-muted: #666666;
-    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    --card-hover-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    --border-radius: 12px;
-    --transition: all 0.3s ease;
-}
+/* =============================================================================
+   HOMEPAGE - Hero & Features Layout
+   ============================================================================= */
 
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Outfit', sans-serif;
-    background-color: var(--white);
-    color: var(--text-dark);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-
-    /* Layout: Fixed viewport height where possible, scrollable otherwise */
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    width: 100%;
-}
-
-/* ==========================================================================
-   Hero Section (Top)
-   ========================================================================== */
+/* =========================================================================
+   Hero Section
+   ========================================================================= */
 .hero-section {
     background-color: var(--primary-red);
     color: var(--white);
     flex: 1;
-    /* Occupies remaining height on desktop */
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     padding: 60px 0;
-    /* Fallback padding */
 }
 
 .hero-content {
@@ -82,14 +42,14 @@ body {
     background-color: var(--white);
     color: var(--text-dark);
     border: none;
-    padding: 12px 36px;
+    padding: var(--spacing-lg) var(--spacing-3xl);
     font-size: 1.1rem;
     font-weight: 400;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     cursor: pointer;
     transition: var(--transition);
-    margin-top: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: var(--spacing-3xl);
+    box-shadow: var(--card-shadow);
 }
 
 .btn-register:hover {
@@ -98,13 +58,12 @@ body {
     background-color: #f8f8f8;
 }
 
-/* ==========================================================================
-   Features Section (Bottom)
-   ========================================================================== */
+/* =========================================================================
+   Features Section
+   ========================================================================= */
 .features-section {
     background-color: var(--white);
     flex: 0 0 auto;
-    /* Shorter section */
     min-height: 35vh;
     padding: 40px 0;
     display: flex;
@@ -113,7 +72,6 @@ body {
 
 .features-section .container {
     max-width: 1480px;
-    /* Wider container as requested */
 }
 
 .cards-grid {
@@ -125,8 +83,8 @@ body {
 
 .feature-card {
     background-color: var(--white);
-    padding: 20px 25px;
-    border-radius: var(--border-radius);
+    padding: var(--spacing-3xl) var(--spacing-3xl);
+    border-radius: var(--radius-lg);
     text-align: center;
     box-shadow: var(--card-shadow);
     transition: var(--transition);
@@ -139,7 +97,7 @@ body {
 }
 
 .icon-wrapper {
-    margin-bottom: 15px;
+    margin-bottom: var(--spacing-xl);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -156,7 +114,7 @@ body {
 .card-title {
     font-size: 1.25rem;
     font-weight: 400;
-    margin-bottom: 10px;
+    margin-bottom: var(--spacing-lg);
     color: var(--text-dark);
 }
 
@@ -168,244 +126,28 @@ body {
     margin: 0 auto;
 }
 
-/* ==========================================================================
-   Media Queries & Responsiveness
-   ========================================================================== */
-
-/* Tablet View */
+/* =========================================================================
+   Responsive Design - Tablet (=992px)
+   ========================================================================= */
 @media (max-width: 992px) {
     .cards-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-/* Mobile View */
+/* =========================================================================
+   Responsive Design - Mobile (=768px)
+   ========================================================================= */
 @media (max-width: 768px) {
     body {
         height: auto;
         overflow-y: visible;
-        /* Standard scrolling on mobile */
     }
 
     .hero-section {
         min-height: 60vh;
         padding: 80px 24px;
         flex: none;
-        /* Let padding define height */
-    }
-
-    .hero-section h1 {
-        font-size: 2.5rem;
-    }
-
-    .subtitle {
-        font-size: 1.1rem;
-    }
-
-    .features-section {
-        padding: 60px 0;
-        min-height: auto;
-    }
-
-    .cards-grid {
-        grid-template-columns: 1fr;
-        max-width: 400px;
-        margin: 0 auto;
-    }
-}:root {
-    --primary-red: #ca2636;
-    --hover-red: #b31a20;
-    --white: #ffffff;
-    --bg-white: #fefefe;
-    --text-dark: #333333;
-    --text-muted: #666666;
-    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    --card-hover-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    --border-radius: 12px;
-    --transition: all 0.3s ease;
-}
-
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Outfit', sans-serif;
-    background-color: var(--white);
-    color: var(--text-dark);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-
-    /* Layout: Fixed viewport height where possible, scrollable otherwise */
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    width: 100%;
-}
-
-/* ==========================================================================
-   Hero Section (Top)
-   ========================================================================== */
-.hero-section {
-    background-color: var(--primary-red);
-    color: var(--white);
-    flex: 1;
-    /* Occupies remaining height on desktop */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 60px 0;
-    /* Fallback padding */
-}
-
-.hero-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    padding-bottom: 20px;
-}
-
-.hero-section h1 {
-    font-size: 3.5rem;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    margin-bottom: 0;
-}
-
-.subtitle {
-    font-size: 1.25rem;
-    font-weight: 300;
-    opacity: 0.9;
-    max-width: 800px;
-}
-
-.btn-register {
-    background-color: var(--white);
-    color: var(--text-dark);
-    border: none;
-    padding: 12px 36px;
-    font-size: 1.1rem;
-    font-weight: 400;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: var(--transition);
-    margin-top: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.btn-register:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-    background-color: #f8f8f8;
-}
-
-/* ==========================================================================
-   Features Section (Bottom)
-   ========================================================================== */
-.features-section {
-    background-color: var(--white);
-    flex: 0 0 auto;
-    /* Shorter section */
-    min-height: 35vh;
-    padding: 40px 0;
-    display: flex;
-    align-items: center;
-}
-
-.features-section .container {
-    max-width: 1480px;
-    /* Wider container as requested */
-}
-
-.cards-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-    width: 100%;
-}
-
-.feature-card {
-    background-color: var(--white);
-    padding: 20px 25px;
-    border-radius: var(--border-radius);
-    text-align: center;
-    box-shadow: var(--card-shadow);
-    transition: var(--transition);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--card-hover-shadow);
-}
-
-.icon-wrapper {
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.icon-container {
-    width: 60px;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.card-title {
-    font-size: 1.25rem;
-    font-weight: 400;
-    margin-bottom: 10px;
-    color: var(--text-dark);
-}
-
-.card-description {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.4;
-    max-width: 100%;
-    margin: 0 auto;
-}
-
-/* ==========================================================================
-   Media Queries & Responsiveness
-   ========================================================================== */
-
-/* Tablet View */
-@media (max-width: 992px) {
-    .cards-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* Mobile View */
-@media (max-width: 768px) {
-    body {
-        height: auto;
-        overflow-y: visible;
-        /* Standard scrolling on mobile */
-    }
-
-    .hero-section {
-        min-height: 60vh;
-        padding: 80px 24px;
-        flex: none;
-        /* Let padding define height */
     }
 
     .hero-section h1 {

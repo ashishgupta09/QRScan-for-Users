@@ -4,18 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="dashboard.css">
+    <title>User Management Dashboard</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
 </head>
 
 <body>
+    <header class="site-header">
+        <div class="brand">
+            <span class="brand-icon">SOS</span>
+            <span class="brand-name">ResQr</span>
+        </div>
+        <nav class="site-nav">
+            <a href="./index.html">Home</a>
+            <a href="./register.html">Register</a>
+            <a class="nav-admin" href="./login.html">Admin</a>
+        </nav>
+    </header>
+
     <div class="heading">
         <span>User Management Dashboard</span>
     </div>
     <div class="approvedBox">
         <span>User Approved and QR code generated</span>
-        <span>X</span>
-       </div>
+        <button type="button" aria-label="close" class="close-btn">&times;</button>
+    </div>
 
     <div class="userTableCard">
         <table class="userTable" aria-label="User table">

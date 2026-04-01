@@ -1,43 +1,11 @@
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --red: #dc3546;
-  --red-dark: #dc3546;
-  --red-light: #ffebee;
-  --red-mid: #ef9a9a;
-  --text: #1a1a2e;
-  --muted: #6b7280;
-  --border: #e0e0e0;
-  --bg: #f7f3f0;
-  --white: #ffffff;
-  --success: #2e7d32;
-  --error: #dc3546;
-  --radius: 10px;
-  --shadow: 0 8px 32px rgba(211,47,47,0.10), 0 2px 8px rgba(0,0,0,0.07);
-}
-
-body {
-  font-family: 'DM Sans', sans-serif;
-   overflow: hidden;
-  background: var(--bg);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 32px 16px;
-  background-image:
-    radial-gradient(ellipse at 10% 80%, rgba(211,47,47,0.08) 0%, transparent 55%),
-    radial-gradient(ellipse at 90% 10%, rgba(211,47,47,0.06) 0%, transparent 55%);
-}
-
 .card {
   background: var(--white);
-  border-radius: 18px;
-  box-shadow: var(--shadow);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
   width: 100%;
   max-width: 560px;
   overflow: hidden;
-  animation: slideUp 0.5s cubic-bezier(.22,1,.36,1) both;
+  animation: slideUp var(--transition-slow) cubic-bezier(.22,1,.36,1) both;
 }
 
 @keyframes slideUp {
@@ -64,13 +32,13 @@ body {
 
 .card-body { padding: 30px 30px 26px; }
 
-.form-group { margin-bottom: 20px; }
+.form-group { margin-bottom: var(--spacing-3xl); }
 
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 20px;
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-3xl);
 }
 
 label {
@@ -82,7 +50,7 @@ label {
   letter-spacing: 0.02em;
 }
 
-label .req { color: var(--red); margin-left: 2px; }
+label .req { color: var(--red); margin-left: var(--spacing-xs); }
 
 input[type="text"],
 input[type="tel"],
@@ -90,14 +58,14 @@ input[type="date"],
 textarea,
 select {
   width: 100%;
-  padding: 11px 14px;
+  padding: var(--spacing-xl) var(--spacing-lg);
   border: 1.5px solid var(--border);
   border-radius: var(--radius);
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-secondary);
   font-size: 0.95rem;
   color: var(--text);
   background: var(--white);
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  transition: var(--transition-color);
   outline: none;
   appearance: none;
   -webkit-appearance: none;
@@ -131,19 +99,26 @@ input.valid, textarea.valid, select.valid {
   border-color: var(--success);
 }
 
+/* =============================================================================
+   REGISTER - Registration Form Page Styles
+   ============================================================================= */
+
+/* =========================================================================
+   Form Structure & Groups
+   ========================================================================= */
 .hint {
   font-size: 0.75rem;
   color: var(--muted);
-  margin-top: 4px;
+  margin-top: var(--spacing-xs);
 }
 
 .err-msg {
   font-size: 0.75rem;
   color: var(--error);
-  margin-top: 4px;
+  margin-top: var(--spacing-xs);
   display: none;
   align-items: center;
-  gap: 4px;
+  gap: var(--spacing-xs);
 }
 .err-msg.show { display: flex; }
 
@@ -152,20 +127,20 @@ input.valid, textarea.valid, select.valid {
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--text);
-  margin-bottom: 10px;
+  margin-bottom: var(--spacing-lg);
   display: block;
 }
 
 .radio-group {
   display: flex;
-  gap: 24px;
+  gap: var(--spacing-3xl);
   align-items: center;
 }
 
 .radio-option {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-md);
   cursor: pointer;
   user-select: none;
 }
@@ -186,8 +161,8 @@ input.valid, textarea.valid, select.valid {
 
 /* Disease fields */
 #diseaseFields {
-  margin-top: 14px;
-  padding: 14px 16px;
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-lg) var(--spacing-xl);
   background: var(--red-light);
   border-radius: var(--radius);
   border-left: 3px solid var(--red);
@@ -204,18 +179,18 @@ input.valid, textarea.valid, select.valid {
 /* Submit button */
 .btn-submit {
   width: 100%;
-  padding: 15px;
+  padding: var(--spacing-xl);
   background: var(--red);
   color: var(--white);
   border: none;
   border-radius: var(--radius);
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-secondary);
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   cursor: pointer;
-  margin-top: 8px;
-  transition: background 0.18s, transform 0.12s, box-shadow 0.18s;
+  margin-top: var(--spacing-md);
+  transition: background var(--transition-fast), transform 0.12s, box-shadow var(--transition-fast);
   position: relative;
   overflow: hidden;
 }

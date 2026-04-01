@@ -1,22 +1,17 @@
-* {
-  box-sizing: border-box;
-}
+/* =============================================================================
+   LOGIN - Authentication Page Styles
+   ============================================================================= */
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #f8f8f8;
-  color: #333;
-}
-
+/* =========================================================================
+   Header & Navigation
+   ========================================================================= */
 .site-header {
   width: 100%;
-  background: #dc3546;
+  background: var(--secondary-red);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 36px;
+  padding: var(--spacing-2xl) var(--spacing-7xl);
   position: fixed;
   top: 0;
   left: 0;
@@ -26,7 +21,7 @@ body {
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--spacing-lg);
 }
 
 .brand-icon {
@@ -36,7 +31,7 @@ body {
   width: 38px;
   height: 38px;
   background: #ff5470;
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   color: white;
   font-weight: 700;
   font-size: 0.95rem;
@@ -50,16 +45,16 @@ body {
 
 .site-nav {
   display: flex;
-  gap: 6px;
+  gap: var(--spacing-sm);
 }
 
 .site-nav a {
   color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   font-size: 0.96rem;
-  padding: 6px 12px;
-  border-radius: 8px;
-  transition: color 0.2s ease, background 0.2s ease;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  transition: var(--transition-fast);
 }
 
 .site-nav a:hover,
@@ -72,6 +67,9 @@ body {
   color: rgba(255, 255, 255, 0.92);
 }
 
+/* =========================================================================
+   Page Layout
+   ========================================================================= */
 .page-body {
   min-height: 100vh;
   display: grid;
@@ -79,47 +77,41 @@ body {
   padding: 140px 24px 24px;
 }
 
+/* =========================================================================
+   Login Card Container
+   ========================================================================= */
 .login-card {
   width: 100%;
   max-width: 660px;
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 24px 60px rgba(37, 23, 77, 0.12);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
   overflow: hidden;
 }
 
 .card-header {
-  background: #dc3546;
+  background: var(--secondary-red);
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: var(--spacing-lg);
   text-align: center;
-}
-
-.lock-icon {
-  font-size: 1.4rem;
-  background: rgba(255, 255, 255, 0.18);
-  width: 48px;
-  height: 48px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  position: relative;
-  left: 171px;
-  top: 21px;
+  padding: var(--spacing-4xl) var(--spacing-4xl) var(--spacing-5xl);
 }
 
 .card-header h1 {
   margin: 0;
   color: white;
   font-weight: 600;
-  position: relative;
-  top: -24px;
 }
 
+/* =========================================================================
+   Login Form Styles
+   ========================================================================= */
 .login-form {
-  padding: 28px 24px 20px;
+  padding: var(--spacing-5xl) var(--spacing-4xl) var(--spacing-3xl);
   display: grid;
-  gap: 18px;
+  gap: var(--spacing-2xl);
 }
 
 .login-form label {
@@ -131,29 +123,29 @@ body {
 
 .login-form input {
   width: 100%;
-  border: 1px solid #d9d9d9;
-  border-radius: 12px;
-  padding: 14px 16px;
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl) var(--spacing-lg);
   font-size: 0.98rem;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: var(--transition-color);
 }
 
 .login-form input:focus {
-  border-color: #dc3546;
-  box-shadow: 0 0 0 4px rgba(217, 32, 53, 0.12);
+  border-color: var(--secondary-red);
+  box-shadow: 0 0 0 4px rgba(220, 53, 70, 0.12);
 }
 
 .login-form button {
   width: 100%;
-  background: #dc3546;
+  background: var(--secondary-red);
   color: white;
   border: none;
-  border-radius: 12px;
-  padding: 14px 0;
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl) 0;
   font-size: 1rem;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition: var(--transition);
 }
 
 .login-form button:hover {
@@ -162,12 +154,15 @@ body {
 }
 
 .login-hint {
-  margin: 0 24px 24px;
+  margin: 0 var(--spacing-4xl) var(--spacing-4xl);
   text-align: center;
   color: #7d7d7d;
   font-size: 0.94rem;
 }
 
+/* =========================================================================
+   Responsive Design - Mobile (≤480px)
+   ========================================================================= */
 @media (max-width: 480px) {
   .site-header {
     flex-direction: column;

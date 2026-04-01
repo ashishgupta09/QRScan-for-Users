@@ -1,17 +1,10 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* =============================================================================
+   DASHBOARD - User Management & Data Display
+   ============================================================================= */
 
-body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    padding: 12px;
-    max-width: 1400px;
-    margin: 0 auto;
-    background: #f5f5f5;
-}
-
+/* =========================================================================
+   Heading Styles
+   ========================================================================= */
 .heading {
     margin-bottom: 20px;
 }
@@ -23,6 +16,9 @@ body {
     display: block;
 }
 
+/* =========================================================================
+   Status Indicators
+   ========================================================================= */
 .approvedBox {
     width: 100%;
     min-height: 50px;
@@ -31,30 +27,42 @@ body {
     display: flex;
     align-items: center;
     font-size: clamp(14px, 3vw, 16px);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     font-weight: 600;
     color: #1f642f;
     justify-content: space-between;
-    padding: 12px 16px;
+    padding: var(--spacing-lg) var(--spacing-xl);
     box-sizing: border-box;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: var(--spacing-md);
 }
 
-.approvedBox .fa-times {
+.approvedBox .close-btn {
+    background: none;
+    border: none;
     font-size: 26px;
-    color: #6f7f74;
-    font-weight: 300;
+    color: var(--muted-gray);
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: var(--transition-color);
 }
 
+.approvedBox .close-btn:hover {
+    color: var(--text-dark);
+}
+
+/* =========================================================================
+   Table Container & Structure
+   ========================================================================= */
 .userTableCard {
-    margin-top: 16px;
+    margin-top: var(--spacing-xl);
     width: 100%;
-    background: #ffffff;
-    border: 1px solid #e2e2e2;
-    border-radius: 12px;
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.09);
-    padding: 14px 12px;
+    background: var(--white);
+    border: 1px solid var(--border-gray);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-2xl) var(--spacing-lg);
     box-sizing: border-box;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -64,44 +72,49 @@ body {
     width: 100%;
     border-collapse: collapse;
     table-layout: auto;
-    font-family: "Segoe UI", Tahoma, sans-serif;
-    color: #333333;
+    font-family: var(--font-system);
+    color: var(--text-dark);
     min-width: 100%;
 }
 
+/* Table Header */
 .userTable thead th {
     height: 40px;
-    background: rgba(247, 215, 218);
+    background: var(--table-header);
     color: #171717;
     font-size: clamp(13px, 2.5vw, 16px);
     font-weight: 700;
     text-align: left;
-    padding: 8px;
+    padding: var(--spacing-md);
     white-space: nowrap;
 }
 
+/* Table Body */
 .userTable tbody td {
     height: 48px;
-    border-bottom: 1px solid #ececec;
+    border-bottom: 1px solid var(--border-subtle);
     font-size: clamp(12px, 2vw, 14px);
     font-weight: 500;
-    color: #4a4a4a;
-    padding: 8px;
+    color: var(--table-body);
+    padding: var(--spacing-md);
     vertical-align: middle;
     white-space: nowrap;
 }
 
+/* =========================================================================
+   Badge & Pill Components
+   ========================================================================= */
 .pill {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     height: 26px;
-    padding: 0 8px;
-    border-radius: 7px;
+    padding: 0 var(--spacing-md);
+    border-radius: var(--radius-lg);
     font-size: clamp(11px, 1.8vw, 13px);
     font-weight: 700;
     line-height: 1;
-    color: #ffffff;
+    color: var(--white);
     white-space: nowrap;
 }
 
@@ -113,21 +126,26 @@ body {
     background: rgba(63, 154, 109);
 }
 
+/* =========================================================================
+   Action Buttons
+   ========================================================================= */
 .qrBtn {
     height: 34px;
     min-width: 72px;
     border: 0;
-    border-radius: 6px;
-    background: rgba(12, 202, 239);
+    border-radius: var(--radius-sm);
+    background: var(--accent-cyan);
     color: #10303a;
     font-size: clamp(12px, 2vw, 14px);
     font-weight: 500;
-    padding: 0 8px;
+    padding: 0 var(--spacing-md);
     cursor: pointer;
     white-space: nowrap;
 }
 
-/* Media Queries */
+/* =========================================================================
+   Responsive Design - Extra Small (≤480px)
+   ========================================================================= */
 @media (max-width: 480px) {
     body {
         padding: 8px;
@@ -183,6 +201,9 @@ body {
     }
 }
 
+/* =========================================================================
+   Responsive Design - Tablet (≤768px)
+   ========================================================================= */
 @media (max-width: 768px) {
     body {
         padding: 10px;
@@ -220,6 +241,9 @@ body {
     }
 }
 
+/* =========================================================================
+   Responsive Design - Desktop (≥1024px)
+   ========================================================================= */
 @media (min-width: 1024px) {
     body {
         padding: 20px;

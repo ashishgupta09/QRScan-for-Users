@@ -3,9 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (registerBtn) {
         registerBtn.addEventListener('click', () => {
-            console.log('Register button clicked');
-            // Redirect to registration page or show a modal
-            // window.location.href = '/register';
+            console.log('Register button clicked - Redirecting to registration page');
+            window.location.href = './register.html';
         });
     }
     
