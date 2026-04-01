@@ -1,0 +1,205 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #f8f8f8;
+  color: #333;
+}
+
+.site-header {
+  width: 100%;
+  background: #dc3546;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 36px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: #ff5470;
+  border-radius: 10px;
+  color: white;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.brand-name {
+  color: white;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.site-nav {
+  display: flex;
+  gap: 6px;
+}
+
+.site-nav a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-size: 0.96rem;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.site-nav a:hover,
+.site-nav a.active {
+  color: #a7a6a6;
+}
+
+.site-nav a.nav-admin {
+  background: rgba(220, 53, 70, 0.45);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.page-body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 140px 24px 24px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 660px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 24px 60px rgba(37, 23, 77, 0.12);
+  overflow: hidden;
+}
+
+.card-header {
+  background: #dc3546;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.lock-icon {
+  font-size: 1.4rem;
+  background: rgba(255, 255, 255, 0.18);
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  position: relative;
+  left: 171px;
+  top: 21px;
+}
+
+.card-header h1 {
+  margin: 0;
+  color: white;
+  font-weight: 600;
+  position: relative;
+  top: -24px;
+}
+
+.login-form {
+  padding: 28px 24px 20px;
+  display: grid;
+  gap: 18px;
+}
+
+.login-form label {
+  display: block;
+  font-size: 24px;
+  color: #444;
+  margin-bottom: 7px;
+}
+
+.login-form input {
+  width: 100%;
+  border: 1px solid #d9d9d9;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 0.98rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-form input:focus {
+  border-color: #dc3546;
+  box-shadow: 0 0 0 4px rgba(217, 32, 53, 0.12);
+}
+
+.login-form button {
+  width: 100%;
+  background: #dc3546;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 0;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.login-form button:hover {
+  transform: translateY(-1px);
+  background: #bf1d2f;
+}
+
+.login-hint {
+  margin: 0 24px 24px;
+  text-align: center;
+  color: #7d7d7d;
+  font-size: 0.94rem;
+}
+
+@media (max-width: 480px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px 20px;
+  }
+
+  .site-nav {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 18px 16px 12px;
+  }
+
+  .lock-icon {
+    position: static;
+    left: auto;
+    top: auto;
+    margin: 4px 0 8px;
+  }
+
+  .card-header h1 {
+    position: static;
+  }
+
+  .login-card {
+    border-radius: 18px;
+  }
+}
