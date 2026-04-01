@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - ResQr</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <style>
+        .profile-card { max-width: 600px; margin: 40px auto; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .profile-item { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+        .profile-label { font-weight: bold; color: #555; }
+        .status-badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.9em; font-weight: bold; }
+        .status-badge.pending { background: #ff9800; color: white; }
+        .status-badge.approved { background: #4caf50; color: white; }
+        .status-badge.rejected { background: #f44336; color: white; }
+        .qr-section { margin-top: 20px; text-align: center; }
+        .qr-btn { background: #673AB7; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="brand">
+            <span class="brand-icon">SOS</span>
+            <span class="brand-name">ResQr</span>
+        </div>
+        <nav class="site-nav">
+            <a href="./index.html">Home</a>
+            <a href="#" id="logoutBtn" style="color: #f44336; margin-left: 15px;">Logout</a>
+        </nav>
+    </header>
+
+    <main class="page-body">
+        <div class="profile-card">
+            <h1>My Profile</h1>
+            <div id="profileContent">
+                <p>Loading your profile...</p>
+            </div>
+            <div class="qr-section" id="qrSection" style="display: none;">
+                <p>Your Emergency QR is ready!</p>
+                <button class="qr-btn" id="viewQrBtn">View My QR Code</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/profile.js"></script>
+</body>
+</html>

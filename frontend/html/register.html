@@ -33,7 +33,34 @@
         </div>
 
         <div class="card-body" id="formBody">
-            <form id="regForm" novalidate>
+            <form id="regForm" novalidate enctype="multipart/form-data">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email <span class="req">*</span></label>
+                        <input type="email" id="email" placeholder="Enter email" required autocomplete="email"/>
+                        <div class="err-msg" id="emailErr">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--error)">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="8" x2="12" y2="12" stroke="#fff" stroke-width="2"/>
+                                <line x1="12" y1="16" x2="12.01" y2="16" stroke="#fff" stroke-width="2"/>
+                            </svg>
+                            Email is required.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password <span class="req">*</span></label>
+                        <input type="password" id="password" placeholder="Create password" required autocomplete="new-password"/>
+                        <div class="err-msg" id="passwordErr">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--error)">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="8" x2="12" y2="12" stroke="#fff" stroke-width="2"/>
+                                <line x1="12" y1="16" x2="12.01" y2="16" stroke="#fff" stroke-width="2"/>
+                            </svg>
+                            Password is required.
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <label for="name">Name <span class="req">*</span></label>
@@ -147,16 +174,16 @@
                         Please select an option.
                     </div>
 
-                    <div id="diseaseFields">
-                        <label for="diseaseDetails">Please specify <span class="req">*</span></label>
-                        <input type="text" id="diseaseDetails" placeholder="e.g. Diabetes, Hypertension…"/>
-                        <div class="err-msg" id="diseaseDetailsErr">
+                    <div id="diseaseFields" style="display: none;">
+                        <label for="disease_document">Medical Document (PDF/JPG) <span class="req">*</span></label>
+                        <input type="file" id="disease_document" accept=".pdf,.png,.jpg,.jpeg"/>
+                        <div class="err-msg" id="docErr">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--error)">
                                 <circle cx="12" cy="12" r="10"/>
                                 <line x1="12" y1="8" x2="12" y2="12" stroke="#fff" stroke-width="2"/>
                                 <line x1="12" y1="16" x2="12.01" y2="16" stroke="#fff" stroke-width="2"/>
                             </svg>
-                            Please describe the disease.
+                            Please upload a document for verification.
                         </div>
                     </div>
                 </div>

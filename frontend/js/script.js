@@ -58,6 +58,26 @@ document.addEventListener('DOMContentLoaded', () => {
         function validateForm() {
             let isValid = true;
 
+            // Validate Email
+            const email = document.getElementById('email');
+            if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+                showError('emailErr');
+                isValid = false;
+            } else {
+                clearError('emailErr');
+                email.classList.add('valid');
+            }
+
+            // Validate Password
+            const password = document.getElementById('password');
+            if (!password.value || password.value.length < 4) {
+                showError('passwordErr');
+                isValid = false;
+            } else {
+                clearError('passwordErr');
+                password.classList.add('valid');
+            }
+
             // Validate Name
             const name = document.getElementById('name');
             if (!name.value.trim()) {
@@ -127,15 +147,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearError('diseaseErr');
             }
 
-            // Validate Disease Details if disease is "yes"
+            // Validate Disease Document if disease is "yes"
             if (diseaseYes.checked) {
-                const diseaseDetails = document.getElementById('diseaseDetails');
-                if (!diseaseDetails.value.trim()) {
-                    showError('diseaseDetailsErr');
+                const doc = document.getElementById('disease_document');
+                if (!doc.files || doc.files.length === 0) {
+                    showError('docErr');
                     isValid = false;
                 } else {
-                    clearError('diseaseDetailsErr');
-                    diseaseDetails.classList.add('valid');
+                    clearError('docErr');
+                    doc.classList.add('valid');
                 }
             }
 
@@ -168,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Form submission
-        function submitRegistration() {
+        async function submitRegistration() {
             submitBtn.disabled = true;
             const btnText = submitBtn.querySelector('.btn-text');
             const spinner = submitBtn.querySelector('.spinner');
@@ -176,36 +196,57 @@ document.addEventListener('DOMContentLoaded', () => {
             btnText.style.opacity = '0';
             spinner.style.display = 'block';
 
-            // Simulate API call (replace with actual backend call)
-            setTimeout(() => {
-                const formData = {
-                    name: document.getElementById('name').value,
-                    address: document.getElementById('address').value,
-                    phone: document.getElementById('phone').value,
-                    altPhone: document.getElementById('altPhone').value || 'N/A',
-                    dob: document.getElementById('dob').value,
-                    bloodGroup: document.getElementById('bloodGroup').value,
-                    disease: document.querySelector('input[name="disease"]:checked').value,
-                    diseaseDetails: document.getElementById('diseaseDetails').value || 'N/A'
-                };
+            const formData = new FormData();
+            formData.append('email', document.getElementById('email').value);
+            formData.append('password', document.getElementById('password').value);
+            formData.append('name', document.getElementById('name').value);
+            formData.append('address', document.getElementById('address').value);
+            formData.append('phone', document.getElementById('phone').value);
+            formData.append('alternate_phone', document.getElementById('altPhone').value);
+            formData.append('dob', document.getElementById('dob').value);
+            formData.append('blood_group', document.getElementById('bloodGroup').value);
+            
+            const hasDisease = document.querySelector('input[name="disease"]:checked').value;
+            formData.append('has_disease', hasDisease);
+            
+            if (hasDisease === 'yes') {
+                const docFile = document.getElementById('disease_document').files[0];
+                if (docFile) {
+                    formData.append('disease_document', docFile);
+                }
+            }
 
-                // Show success overlay
-                formBody.style.display = 'none';
-                successOverlay.classList.add('show');
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/user/register', {
+                    method: 'POST',
+                    body: formData
+                });
 
-                // Display submitted data
-                const successDetail = document.getElementById('successDetail');
-                successDetail.innerHTML = `
-                    <strong>Name:</strong> ${formData.name}<br/>
-                    <strong>Phone:</strong> ${formData.phone}<br/>
-                    <strong>Blood Group:</strong> ${formData.bloodGroup}<br/>
-                    <strong>Status:</strong> Pending Approval
-                `;
+                const result = await response.json();
 
+                if (response.ok) {
+                    // Show success overlay
+                    formBody.style.display = 'none';
+                    successOverlay.classList.add('show');
+
+                    // Display submitted data
+                    const successDetail = document.getElementById('successDetail');
+                    successDetail.innerHTML = `
+                        <strong>Name:</strong> ${result.user.name}<br/>
+                        <strong>Email:</strong> ${result.user.email}<br/>
+                        <strong>Status:</strong> ${result.user.status}
+                    `;
+                } else {
+                    alert('Registration failed: ' + (result.error || 'Server error'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Connection error. Is the backend running?');
+            } finally {
                 submitBtn.disabled = false;
                 btnText.style.opacity = '1';
                 spinner.style.display = 'none';
-            }, 1500);
+            }
         }
 
         // Reset button
