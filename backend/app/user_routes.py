@@ -25,19 +25,24 @@ def register():
     Required fields: email, password, name, address, phone, dob, blood_group, has_disease
     Optional: alternate_phone, disease_document (file, required if has_disease=yes)
     """
-    # Collect form fields
-    email = request.form.get('email', '').strip()
-    password = request.form.get('password', '').strip()
-    name = request.form.get('name', '').strip()
-    address = request.form.get('address', '').strip()
-    phone = request.form.get('phone', '').strip()
-    alternate_phone = request.form.get('alternate_phone', '').strip()
-    dob_str = request.form.get('dob', '').strip()
-    blood_group = request.form.get('blood_group', '').strip()
-    has_disease_str = request.form.get('has_disease', '').strip().lower()
+    # Collect data from JSON (if provided) or Form (if multipart)
+    if request.is_json:
+        data = request.get_json() or {}
+    else:
+        data = request.form
+
+    email = data.get('email', '').strip()
+    password = data.get('password', '').strip()
+    name = data.get('name', '').strip()
+    address = data.get('address', '').strip()
+    phone = data.get('phone', '').strip()
+    alternate_phone = data.get('alternate_phone', '').strip()
+    dob_str = data.get('dob', '').strip()
+    blood_group = data.get('blood_group', '').strip()
+    has_disease_str = str(data.get('has_disease', '')).strip().lower()
 
     # ── Validate required fields ──
-    required = {
+    required_fields = {
         'email': email,
         'password': password,
         'name': name,
@@ -47,9 +52,10 @@ def register():
         'blood_group': blood_group,
         'has_disease': has_disease_str,
     }
-    for field, value in required.items():
+
+    for field, value in required_fields.items():
         if not value:
-            return jsonify({'error': 'Valid details in all fields'}), 400
+            return jsonify({'error': f'Missing or invalid field: {field}'}), 400
 
     # ── Phone validation (10 digits) ──
     if not re.match(r'^\d{10}$', phone):
@@ -118,9 +124,11 @@ def register():
 # ─── USER LOGIN ──────────────────────────────────────────────────────
 @user_bp.route('/login', methods=['POST'])
 def login():
-    data = request.get_json()
-    if not data:
-        return jsonify({'error': 'Request body is required'}), 400
+    # Collect data from JSON or Form
+    if request.is_json:
+        data = request.get_json() or {}
+    else:
+        data = request.form
 
     email = data.get('email', '').strip()
     password = data.get('password', '').strip()

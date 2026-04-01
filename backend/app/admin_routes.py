@@ -10,9 +10,11 @@ admin_bp = Blueprint('admin', __name__, url_prefix='/api/admin')
 # ─── ADMIN LOGIN ─────────────────────────────────────────────────────
 @admin_bp.route('/login', methods=['POST'])
 def admin_login():
-    data = request.get_json()
-    if not data:
-        return jsonify({'error': 'Request body is required'}), 400
+    # Collect data from JSON or Form
+    if request.is_json:
+        data = request.get_json() or {}
+    else:
+        data = request.form
 
     email = data.get('email', '').strip()
     password = data.get('password', '').strip()
