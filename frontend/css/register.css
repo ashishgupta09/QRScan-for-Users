@@ -1,0 +1,312 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #dc3546;
+  --red-dark: #dc3546;
+  --red-light: #ffebee;
+  --red-mid: #ef9a9a;
+  --text: #1a1a2e;
+  --muted: #6b7280;
+  --border: #e0e0e0;
+  --bg: #f7f3f0;
+  --white: #ffffff;
+  --success: #2e7d32;
+  --error: #dc3546;
+  --radius: 10px;
+  --shadow: 0 8px 32px rgba(211,47,47,0.10), 0 2px 8px rgba(0,0,0,0.07);
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+   overflow: hidden;
+  background: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background-image:
+    radial-gradient(ellipse at 10% 80%, rgba(211,47,47,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse at 90% 10%, rgba(211,47,47,0.06) 0%, transparent 55%);
+}
+
+.card {
+  background: var(--white);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 560px;
+  overflow: hidden;
+  animation: slideUp 0.5s cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card-header {
+  background: var(--red);
+  padding: 22px 30px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-header svg { flex-shrink: 0; }
+
+.card-header h1 {
+  font-family: 'Playfair Display', serif;
+  color: var(--white);
+  font-size: 1.45rem;
+  letter-spacing: 0.01em;
+}
+
+.card-body { padding: 30px 30px 26px; }
+
+.form-group { margin-bottom: 20px; }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+
+label .req { color: var(--red); margin-left: 2px; }
+
+input[type="text"],
+input[type="tel"],
+input[type="date"],
+textarea,
+select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: var(--white);
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 78px;
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23d32f2f' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(211,47,47,0.10);
+  background: #fff9f9;
+}
+
+input.error, textarea.error, select.error {
+  border-color: var(--error);
+  background: #fff5f5;
+}
+
+input.valid, textarea.valid, select.valid {
+  border-color: var(--success);
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.err-msg {
+  font-size: 0.75rem;
+  color: var(--error);
+  margin-top: 4px;
+  display: none;
+  align-items: center;
+  gap: 4px;
+}
+.err-msg.show { display: flex; }
+
+/* Radio group */
+.radio-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.radio-group {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.radio-option input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--red);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.radio-option span {
+  font-size: 0.93rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* Disease fields */
+#diseaseFields {
+  margin-top: 14px;
+  padding: 14px 16px;
+  background: var(--red-light);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--red);
+  display: none;
+  animation: fadeIn 0.25s ease;
+}
+#diseaseFields.show { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Submit button */
+.btn-submit {
+  width: 100%;
+  padding: 15px;
+  background: var(--red);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.18s, transform 0.12s, box-shadow 0.18s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-submit:hover { background: var(--red-dark); box-shadow: 0 4px 16px rgba(211,47,47,0.25); }
+.btn-submit:active { transform: scale(0.985); }
+.btn-submit:disabled { background: var(--red-mid); cursor: not-allowed; }
+
+.btn-submit .btn-text { display: inline-block; transition: opacity 0.15s; }
+
+.btn-submit .spinner {
+  display: none;
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid rgba(255,255,255,0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+/* Success overlay */
+.success-overlay {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 30px;
+  text-align: center;
+  animation: fadeIn 0.4s ease;
+}
+.success-overlay.show { display: flex; }
+
+.success-icon {
+  width: 72px;
+  height: 72px;
+  background: #e8f5e9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.success-overlay h2 {
+  font-family: 'Playfair Display', serif;
+  color: var(--text);
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.success-overlay p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+}
+
+.success-detail {
+  background: #f9fafb;
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  width: 100%;
+  text-align: left;
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.8;
+}
+.success-detail strong { color: var(--red); }
+
+.btn-reset {
+  margin-top: 20px;
+  padding: 11px 28px;
+  background: transparent;
+  border: 2px solid var(--red);
+  color: var(--red);
+  border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+.btn-reset:hover { background: var(--red); color: #fff; }
+
+@media (max-width: 500px) {
+  .form-row { grid-template-columns: 1fr; }
+  .card-body { padding: 20px 16px; }
+  .card-header { padding: 18px 16px; }
+}
