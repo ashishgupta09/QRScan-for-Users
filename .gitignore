@@ -1,0 +1,23 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+venv/
+.venv/
+env/
+.env
+
+# Database
+backend/resqr.db
+
+# Uploaded Files
+backend/uploads/
+
+# IDE files
+.vscode/
+
+# test artifacts
+backend/test_results.txt
+backend/utf8_results.txt
