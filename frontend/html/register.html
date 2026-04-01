@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Registration</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="../css/register.css"/>
+
+  
+</head>
+<body>
+
+<div class="card" id="mainCard">
+
+  <!-- Header -->
+  <div class="card-header">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"
+         stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+    <h1>User Registration</h1>
+  </div>
+
+  <!-- Form Body -->
+  <div class="card-body" id="formBody">
+    <form id="regForm" novalidate>
+
+      <!-- Name -->
+      <div class="form-group">
+        <label for="name">Name <span class="req">*</span></label>
+        <input type="text" id="name" placeholder="Enter full name" autocomplete="name"/>
+        <div class="err-msg" id="nameErr">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--error)">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12" stroke="#fff" stroke-width="2"/>
+            <line x1="12" y1="16" x2="12.01" y2="16" stroke="#fff" stroke-width="2"/>
+          </svg>
+          Name is required.
+        </div>
+      </div>
+
+      <!-- Address -->
+      <div class="form-group">
+        <label for="address">Address <span class="req">*</span></label>
+        <textarea id="address" placeholder="Enter your address"></textarea>
+        <div class="err-msg" id="addressErr">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--error)">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12" stroke="#fff" stroke-width="2"/>
+            <line x1="12" y1="16" x2="12.01" y2="16" stroke="#fff" stroke-width="2"/>
+          </svg>
+          Address is required.
+        </div>
+      </div>
+
+      <!-- Phone + Alternate Mobile -->
+      <div class="form-row">
+        <div>
+          <label for="phone">Phone <span class="req">*</span></label>
+          <input type="tel" id="phone" placeholder="10-digit number" maxlength="10"/>
+          <div class="hint">10 digits only</div>
+          <div class="err-msg" id="phoneErr">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--error)">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12" stroke="#fff" stroke-width="2"/>
+              <line x1="12" y1="16" x2="12.01" y2="16" stroke="#fff" stroke-width="2"/>
+            </svg>
+            Enter a valid 10-digit number.
+          </div>
+        </div>
+        <div>
+          <label for="altPhone">Alternate Mobile</label>
+          <input type="tel" id="altPhone" placeholder="Optional" maxlength="10"/>
+          <div class="err-msg" id="altPhoneErr">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--error)">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12" stroke="#fff" stroke-width="2"/>
+              <line x1="12" y1="16" x2="12.01" y2="16" stroke="#fff" stroke-width="2"/>
+            </svg>
+            Must be 10 digits if provided.
+          </div>
+        </div>
+      </div>
+
+      <!-- Date of Birth + Blood Group -->
+      <div class="form-row">
+        <div>
+          <label for="dob">Date of Birth <span class="req">*</span></label>
+          <input type="date" id="dob"/>
+          <div class="err-msg" id="dobErr">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--error)">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12" stroke="#fff" stroke-width="2"/>
+              <line x1="12" y1="16" x2="12.01" y2="16" stroke="#fff" stroke-width="2"/>
+            </svg>
+            Please select a valid date of birth.
+          </div>
+        </div>
+        <div>
+          <label for="bloodGroup">Blood Group <span class="req">*</span></label>
+          <select id="bloodGroup">
+            <option value="">— Select —</option>
+            <option value="A+">A+</option>
+            <option value="A-">A−</option>
+            <option value="B+">B+</option>
+            <option value="B-">B−</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB−</option>
+            <option value="O+">O+</option>
+            <option value="O-">O−</option>
+          </select>
+          <div class="err-msg" id="bloodErr">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--error)">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12" stroke="#fff" stroke-width="2"/>
+              <line x1="12" y1="16" x2="12.01" y2="16" stroke="#fff" stroke-width="2"/>
+            </svg>
+            Please select a blood group.
+          </div>
+        </div>
+      </div>
+
+      <!-- Any Disease -->
+      <div class="form-group">
+        <span class="radio-label">Any Disease? <span class="req">*</span></span>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="disease" value="yes" id="diseaseYes"/>
+            <span>Yes</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="disease" value="no" id="diseaseNo" checked/>
+            <span>No</span>
+          </label>
+        </div>
+        <div class="err-msg" id="diseaseErr">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--error)">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12" stroke="#fff" stroke-width="2"/>
+            <line x1="12" y1="16" x2="12.01" y2="16" stroke="#fff" stroke-width="2"/>
+          </svg>
+          Please select an option.
+        </div>
+
+        <!-- Conditional disease detail field -->
+        <div id="diseaseFields">
+          <label for="diseaseDetails" style="font-size:0.82rem;font-weight:600;color:var(--text);margin-bottom:6px;display:block;">
+            Please specify <span class="req">*</span>
+          </label>
+          <input type="text" id="diseaseDetails" placeholder="e.g. Diabetes, Hypertension…"/>
+          <div class="err-msg" id="diseaseDetailsErr">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--error)">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12" stroke="#fff" stroke-width="2"/>
+              <line x1="12" y1="16" x2="12.01" y2="16" stroke="#fff" stroke-width="2"/>
+            </svg>
+            Please describe the disease.
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <span class="btn-text">Submit Registration</span>
+        <div class="spinner" id="spinner"></div>
+      </button>
+
+    </form>
+  </div>
+
+  <!-- Success State -->
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-icon">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#2e7d32"
+           stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <h2>Registration Successful!</h2>
+    <p>Your details have been submitted successfully.</p>
+    <div class="success-detail" id="successDetail"></div>
+    <button class="btn-reset" id="resetBtn">Register Another</button>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
