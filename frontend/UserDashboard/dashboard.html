@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+    <div class="heading">
+        <span>User Management Dashboard</span>
+    </div>
+    <div class="approvedBox">
+        <span>User Approved and QR code generated</span>
+        <span>X</span>
+       </div>
+
+    <div class="userTableCard">
+        <table class="userTable" aria-label="User table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Blood Group</th>
+                    <th>Disease</th>
+                    <th>Status</th>
+                    <th>QR Code</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>test user</td>
+                    <td>9765975757</td>
+                    <td><span class="pill bloodPill">O+</span></td>
+                    <td>No</td>
+                    <td><span class="pill statusPill">Approved</span></td>
+                    <td><button type="button" class="qrBtn">View QR</button></td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
