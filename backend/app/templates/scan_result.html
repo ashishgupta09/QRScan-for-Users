@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Details - ResQr</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-red: #ca2636;
+            --white: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-muted: #666666;
+            --blood-red: #d32f2f;
+            --bg-light: #f8f9fa;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
+
+        header {
+            background-color: var(--primary-red);
+            padding: 15px 5%;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .brand-icon {
+            background: #ff4d4d;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .brand-name { font-weight: 700; font-size: 1.4rem; }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .alert-banner {
+            background: #fff3f3;
+            border-left: 4px solid var(--primary-red);
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-weight: 500;
+            color: #b71c1c;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 24px 20px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .user-name { font-size: 1.8rem; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
+        .user-id { font-size: 0.85rem; color: var(--text-muted); opacity: 0.8; }
+
+        .card-body { padding: 20px; }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .detail-row:last-child { border-bottom: none; }
+
+        .label { font-weight: 500; color: var(--text-muted); font-size: 0.95rem; }
+        .value { font-weight: 600; color: var(--text-dark); }
+
+        .blood-pill {
+            background-color: var(--blood-red);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .disease-section {
+            padding: 15px;
+            background: #fffbf0;
+            border-radius: 12px;
+            margin-top: 10px;
+            border: 1px solid #ffeeba;
+        }
+
+        .disease-section h4 { color: #856404; margin-bottom: 8px; font-size: 1rem; }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn-call {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: opacity 0.2s;
+        }
+
+        .btn-primary { background-color: var(--primary-red); color: white; }
+        .btn-secondary { background-color: #2e7d32; color: white; }
+
+        .btn-call:hover { opacity: 0.9; }
+
+        footer { text-align: center; margin-top: 30px; padding: 20px; font-size: 0.8rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+    <header>
+        <span class="brand-icon">SOS</span>
+        <span class="brand-name">ResQr</span>
+    </header>
+
+    <div class="container">
+        <div class="alert-banner">
+            ⚠️ Emergency Information Accessed
+        </div>
+
+        <div class="info-card">
+            <div class="card-header">
+                <h1 class="user-name">{{ user.name }}</h1>
+                <p class="user-id">Patient Profile ID: #{{ user.id }}</p>
+            </div>
+
+            <div class="card-body">
+                <div class="detail-row">
+                    <span class="label">Blood Group</span>
+                    <span class="value"><span class="blood-pill">{{ user.blood_group }}</span></span>
+                </div>
+
+                <div class="detail-row">
+                    <span class="label">Date of Birth</span>
+                    <span class="value">{{ user.dob.strftime('%d %b, %Y') if user.dob else '—' }}</span>
+                </div>
+
+                <div class="detail-row">
+                    <span class="label">Medical History</span>
+                    <span class="value">{{ 'Chronic Conditions Noted' if user.has_disease else 'No Known Diseases' }}</span>
+                </div>
+
+                {% if user.has_disease %}
+                <div class="disease-section">
+                    <h4>Identified Health Risks</h4>
+                    <p>Contact professional medical history for further information.</p>
+                </div>
+                {% endif %}
+
+                <div class="detail-row">
+                    <span class="label">Home Address</span>
+                    <span class="value" style="text-align: right; max-width: 60%;">{{ user.address }}</span>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="tel:{{ user.phone }}" class="btn-call btn-primary">
+                        📞 Call Primary
+                    </a>
+                    {% if user.alternate_phone %}
+                    <a href="tel:{{ user.alternate_phone }}" class="btn-call btn-secondary">
+                        📞 Emergency Contact
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            This is a secure emergency medical profile generated by ResQr.<br>
+            © 2026 ResQr Support Systems
+        </footer>
+    </div>
+</body>
+</html>
