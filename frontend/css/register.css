@@ -5,35 +5,47 @@
   width: 100%;
   max-width: 820px;
   overflow: hidden;
-  animation: slideUp var(--transition-slow) cubic-bezier(.22,1,.36,1) both;
+  animation: slideUp var(--transition-slow) cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.card-header {
-  /* background: var(--primary-red);
+.register-page .card-header {
+  background: var(--primary-red);
   padding: 22px 30px;
   display: flex;
-  justify-content: flex-start; 
-  gap: 12px; */
+  justify-content: flex-start;
+  gap: 12px;
 }
 
-.card-header svg { flex-shrink: 0; }
+.register-page .card-header svg {
+  flex-shrink: 0;
+}
 
-.card-header h1 {
-  font-family: 'Playfair Display', serif;
+.register-page .card-header h1 {
+  font-family: "Playfair Display", serif;
   color: var(--white);
   font-size: 1.45rem;
   letter-spacing: 0.01em;
   text-align: left;
 }
 
-.card-body { padding: 40px 40px 35px; }
+.card-body {
+  padding: 28px;
+}
 
-.form-group { margin-bottom: var(--spacing-3xl); }
+.form-group {
+  margin-bottom: var(--spacing-3xl);
+}
 
 .form-row {
   display: grid;
@@ -51,7 +63,10 @@ label {
   letter-spacing: 0.02em;
 }
 
-label .req { color: var(--red); margin-left: var(--spacing-xs); }
+label .req {
+  color: var(--red);
+  margin-left: var(--spacing-xs);
+}
 
 input[type="text"],
 input[type="tel"],
@@ -85,18 +100,24 @@ select {
   cursor: pointer;
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
   border-color: var(--red);
-  box-shadow: 0 0 0 3px rgba(211,47,47,0.10);
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
   background: #fff9f9;
 }
 
-input.error, textarea.error, select.error {
+input.error,
+textarea.error,
+select.error {
   border-color: var(--error);
   background: #fff5f5;
 }
 
-input.valid, textarea.valid, select.valid {
+input.valid,
+textarea.valid,
+select.valid {
   border-color: var(--success);
 }
 
@@ -158,7 +179,9 @@ body > .card {
   align-items: center;
   gap: var(--spacing-xs);
 }
-.err-msg.show { display: flex; }
+.err-msg.show {
+  display: flex;
+}
 
 /* Radio group */
 .radio-label {
@@ -207,11 +230,19 @@ body > .card {
   display: none;
   animation: fadeIn 0.25s ease;
 }
-#diseaseFields.show { display: block; }
+#diseaseFields.show {
+  display: block;
+}
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* Submit button */
@@ -233,20 +264,29 @@ body > .card {
   overflow: hidden;
 }
 
-.btn-submit:hover { 
-  background: var(--hover-red); 
-  box-shadow: 0 4px 16px rgba(202,38,54,0.25); 
+.btn-submit:hover {
+  background: var(--hover-red);
+  box-shadow: 0 4px 16px rgba(202, 38, 54, 0.25);
 }
-.btn-submit:active { transform: scale(0.985); }
-.btn-submit:disabled { background: var(--red-mid); cursor: not-allowed; }
+.btn-submit:active {
+  transform: scale(0.985);
+}
+.btn-submit:disabled {
+  background: var(--red-mid);
+  cursor: not-allowed;
+}
 
-.btn-submit .btn-text { display: inline-block; transition: opacity 0.15s;color: #fff; }
+.btn-submit .btn-text {
+  display: inline-block;
+  transition: opacity 0.15s;
+  color: #fff;
+}
 
 .btn-submit .spinner {
   display: none;
   width: 20px;
   height: 20px;
-  border: 2.5px solid rgba(255,255,255,0.4);
+  border: 2.5px solid rgba(255, 255, 255, 0.4);
   border-top-color: #fff;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
@@ -256,7 +296,11 @@ body > .card {
   transform: translate(-50%, -50%);
 }
 
-@keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
 
 /* Success overlay */
 .success-overlay {
@@ -268,7 +312,9 @@ body > .card {
   text-align: center;
   animation: fadeIn 0.4s ease;
 }
-.success-overlay.show { display: flex; }
+.success-overlay.show {
+  display: flex;
+}
 
 .success-icon {
   width: 72px;
@@ -282,7 +328,7 @@ body > .card {
 }
 
 .success-overlay h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   color: var(--text);
   font-size: 1.5rem;
   margin-bottom: 10px;
@@ -304,7 +350,9 @@ body > .card {
   color: var(--text);
   line-height: 1.8;
 }
-.success-detail strong { color: var(--red); }
+.success-detail strong {
+  color: var(--red);
+}
 
 .btn-reset {
   margin-top: 20px;
@@ -313,13 +361,18 @@ body > .card {
   border: 2px solid var(--red);
   color: var(--red);
   border-radius: var(--radius);
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-weight: 600;
   font-size: 0.92rem;
   cursor: pointer;
-  transition: background 0.18s, color 0.18s;
+  transition:
+    background 0.18s,
+    color 0.18s;
 }
-.btn-reset:hover { background: var(--red); color: #fff; }
+.btn-reset:hover {
+  background: var(--red);
+  color: #fff;
+}
 
 /* =========================================================================
    Responsive Design - Tablet (≤768px)

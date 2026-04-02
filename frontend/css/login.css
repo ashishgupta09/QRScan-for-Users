@@ -90,7 +90,7 @@
   overflow: hidden;
 }
 
-.card-header {
+.login-page .card-header {
   background: var(--primary-red);
   align-items: center;
   display: flex;
@@ -100,19 +100,19 @@
   text-align: center;
   height: 78px;
 }
-.lock-icon {
+.login-page .lock-icon {
   font-size: 2rem;
   position: relative;
   top: 15px;
   right: 125px;
 }
 
-.card-header h1 {
+.login-page .card-header h1 {
   margin: 0;
   color: white;
   font-weight: 600;
   position: relative;
-  bottom: 33px;
+  bottom: 47px;
 }
 
 /* =========================================================================
