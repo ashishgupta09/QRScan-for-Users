@@ -1,7 +1,5 @@
 # Render infrastructure configuration for the backend service
-#
-# This file lives inside the `backend` folder; build/start commands use the
-# current directory so Render runs everything from here.
+# Place this file at the repo root when using Render Blueprints.
 services:
   - type: web
     name: resqr-api
@@ -24,7 +22,3 @@ services:
         sync: false          # set if using Postgres; leave blank for SQLite
     healthCheckPath: /api/health
     autoDeploy: true
-    disk:
-      name: uploads
-      mountPath: /opt/render/project/src/backend/uploads
-      sizeGB: 1
