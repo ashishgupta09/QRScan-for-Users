@@ -1,0 +1,31 @@
+# Render infrastructure configuration
+#
+# Deploys the Flask API with gunicorn. Adjust names/regions/plans as needed.
+services:
+  - type: web
+    name: resqr-api
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: |
+      cd backend
+      pip install --upgrade pip
+      pip install -r requirements.txt
+    startCommand: |
+      cd backend
+      gunicorn -w 4 -b 0.0.0.0:$PORT run:app
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: SECRET_KEY
+        sync: false          # set in Render dashboard
+      - key: JWT_SECRET_KEY
+        sync: false          # set in Render dashboard
+      - key: DATABASE_URL
+        sync: false          # set if using Postgres; leave blank for SQLite
+    healthCheckPath: /api/health
+    autoDeploy: true
+    disk:
+      name: uploads
+      mountPath: /opt/render/project/src/backend/uploads
+      sizeGB: 1
