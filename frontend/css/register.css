@@ -1,9 +1,9 @@
 .card {
   background: var(--white);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-sm);
   box-shadow: var(--shadow-xl);
   width: 100%;
-  max-width: 560px;
+  max-width: 820px;
   overflow: hidden;
   animation: slideUp var(--transition-slow) cubic-bezier(.22,1,.36,1) both;
 }
@@ -14,11 +14,11 @@
 }
 
 .card-header {
-  background: var(--primary-red);
+  /* background: var(--primary-red);
   padding: 22px 30px;
   display: flex;
-  align-items: center;
-  gap: 12px;
+  justify-content: flex-start; 
+  gap: 12px; */
 }
 
 .card-header svg { flex-shrink: 0; }
@@ -28,9 +28,10 @@
   color: var(--white);
   font-size: 1.45rem;
   letter-spacing: 0.01em;
+  text-align: left;
 }
 
-.card-body { padding: 30px 30px 26px; }
+.card-body { padding: 40px 40px 35px; }
 
 .form-group { margin-bottom: var(--spacing-3xl); }
 
@@ -218,11 +219,11 @@ body > .card {
   width: 100%;
   padding: var(--spacing-xl);
   background: var(--primary-red);
-  color: var(--white);
+  color: #ffffff;
   border: none;
   border-radius: var(--radius);
   font-family: var(--font-secondary);
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   cursor: pointer;
@@ -239,7 +240,7 @@ body > .card {
 .btn-submit:active { transform: scale(0.985); }
 .btn-submit:disabled { background: var(--red-mid); cursor: not-allowed; }
 
-.btn-submit .btn-text { display: inline-block; transition: opacity 0.15s; }
+.btn-submit .btn-text { display: inline-block; transition: opacity 0.15s;color: #fff; }
 
 .btn-submit .spinner {
   display: none;
