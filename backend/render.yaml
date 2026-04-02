@@ -1,0 +1,20 @@
+# Render infrastructure configuration (root-level Blueprint)
+services:
+  - type: web
+    name: resqr-api
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install --upgrade pip && pip install -r backend/requirements.txt
+    startCommand: gunicorn -w 4 -b 0.0.0.0:$PORT backend.run:app
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: SECRET_KEY
+        sync: false          # set in Render dashboard
+      - key: JWT_SECRET_KEY
+        sync: false          # set in Render dashboard
+      - key: DATABASE_URL
+        sync: false          # set if using Postgres; leave blank for SQLite
+    healthCheckPath: /api/health
+    autoDeploy: true
