@@ -8,11 +8,17 @@ from .config import Config
 from .models import db, Admin
 
 
+# Resolve paths relative to this package so templates load in any environment
+PACKAGE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+
 def create_app():
-    app = Flask(__name__, 
-                static_folder='../static',
-                static_url_path='/static',
-                template_folder='../templates')
+    app = Flask(
+        __name__,
+        static_folder='../static',      # keep existing static setup
+        static_url_path='/static',
+        template_folder=os.path.join(PACKAGE_DIR, 'templates')  # point to app/templates
+    )
     app.config.from_object(Config)
 
     # ── Initialize extensions ──
