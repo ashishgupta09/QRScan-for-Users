@@ -5,3 +5,4 @@ flask-cors
 qrcode[pil]
 python-dotenv
 Pillow
+gunicorn
