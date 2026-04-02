@@ -17,7 +17,7 @@ def repair_missing_tokens():
         
         # Use a dummy host_url since it's just stored for consistency in some routes, 
         # but the token itself is what matters.
-        host_url = "http://127.0.0.1:5000" 
+        host_url = "https://qrscan-for-users.onrender.com" 
 
         for user in users:
             try:

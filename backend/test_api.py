@@ -1,7 +1,7 @@
 """Quick test script to verify all ResQr API endpoints."""
 import requests
 
-BASE = "http://127.0.0.1:5000"
+BASE = "https://qrscan-for-users.onrender.com"
 
 def sep(title):
     print(f"\n{'='*50}\n  {title}\n{'='*50}")
