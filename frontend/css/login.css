@@ -93,7 +93,7 @@
   background: var(--primary-red);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   gap: var(--spacing-lg);
   text-align: center;
   padding: var(--spacing-4xl);
