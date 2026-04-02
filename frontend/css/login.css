@@ -93,6 +93,9 @@
 .card-header {
   background: var(--primary-red);
   align-items: center;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
   gap: var(--spacing-lg);
   text-align: center;
   height: 78px;
