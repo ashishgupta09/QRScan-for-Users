@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 /* =============================================================================
    GLOBAL STYLES - Core Theme & Base Elements
    ============================================================================= */
@@ -71,10 +72,10 @@
   --transition-color: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 
   /* Font Families */
-  --font-primary: "Outfit", sans-serif;
-  --font-secondary: "DM Sans", sans-serif;
-  --font-serif: "Playfair Display", serif;
-  --font-system: "Segoe UI", Tahoma, sans-serif;
+  --font-primary: "Roboto", sans-serif;
+  --font-secondary: "Roboto", sans-serif;
+  --font-serif: "Roboto", sans-serif;
+  --font-system: "Roboto", sans-serif;
 
   /* Typography */
   --line-height: 1.6;
@@ -324,7 +325,7 @@
    Body & Main Container
    ========================================================================= */
 body {
-  font-family: "Outfit", sans-serif;
+  font-family: var(--font-primary);
   background-color: var(--white);
   color: var(--text-dark);
   line-height: 1.6;
@@ -344,7 +345,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 5%;
+  padding: 12px 20px;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -358,10 +359,10 @@ body {
 }
 
 .brand-icon {
-  background-color: var(--resqr-pink);
+  background: #ff5470;
   color: white;
-  padding: 2px 8px;
-  border-radius: 4px;
+  padding: 2px 0px;
+  border-radius: 1px;
   font-weight: 700;
   font-size: 0.8rem;
   text-transform: uppercase;

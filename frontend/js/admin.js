@@ -52,21 +52,24 @@ function renderUsers(users) {
 
     users.forEach(user => {
         const tr = document.createElement('tr');
+        // Standardize status for CSS classes (ensure lowercase)
+        const statusClass = user.status.toLowerCase();
+        
         tr.innerHTML = `
             <td>${user.id}</td>
             <td>${user.name}</td>
             <td>${user.phone}</td>
             <td><span class="pill bloodPill">${user.blood_group}</span></td>
             <td>${user.has_disease ? 'Yes' : 'No'}</td>
-            <td><span class="pill statusPill ${user.status}">${user.status}</span></td>
+            <td><span class="pill statusPill ${statusClass}">${user.status.charAt(0).toUpperCase() + user.status.slice(1)}</span></td>
             <td>
-                ${user.status === 'approved' ? `<button type="button" class="qrBtn" onclick="viewQR('${user.qr_image_url}')">View QR</button>` : '—'}
+                ${statusClass === 'approved' ? `<button type="button" class="qrBtn" onclick="viewQR('${user.qr_image_url}')">View QR</button>` : '-'}
             </td>
             <td>
-                ${user.status === 'pending' ? 
+                ${statusClass === 'pending' ? 
                     `<button class="btn-approve" onclick="updateStatus(${user.id}, 'approve')">Approve</button>
                      <button class="btn-reject" onclick="updateStatus(${user.id}, 'reject')">Reject</button>` 
-                    : 'DONE'}
+                    : '<span style="color: var(--text-muted); font-size: 13px;">DONE</span>'}
             </td>
         `;
         tbody.appendChild(tr);
