@@ -6,3 +6,4 @@ qrcode[pil]
 python-dotenv
 Pillow
 gunicorn
+psycopg2-binary
