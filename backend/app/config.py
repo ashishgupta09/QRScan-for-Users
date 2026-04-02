@@ -15,3 +15,7 @@ class Config:
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'resqr-jwt-secret-key-change-in-prod')
     UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16 MB max upload
+    
+    # Production settings
+    FLASK_ENV = os.getenv('FLASK_ENV', 'production')
+    JSON_SORT_KEYS = False

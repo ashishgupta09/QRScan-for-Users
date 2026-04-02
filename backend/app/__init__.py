@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, render_template, send_from_directory
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from werkzeug.security import generate_password_hash
@@ -9,7 +9,10 @@ from .models import db, Admin
 
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, 
+                static_folder='../static',
+                static_url_path='/static',
+                template_folder='../templates')
     app.config.from_object(Config)
 
     # ── Initialize extensions ──
@@ -41,19 +44,45 @@ def create_app():
             db.session.commit()
             print('✅ Default admin created: admin@resqr.com / admin123')
 
-    # ── Health check route ──
+    # ── Serve Frontend HTML Pages ──
     @app.route('/')
+    def index():
+        return render_template('index.html')
+    
+    @app.route('/login')
+    def login():
+        return render_template('login.html')
+    
+    @app.route('/register')
+    def register():
+        return render_template('register.html')
+    
+    @app.route('/dashboard')
+    def dashboard():
+        return render_template('dashboard.html')
+    
+    @app.route('/profile')
+    def profile():
+        return render_template('profile.html')
+    
+    # ── Catch-all for SPA routing ──
+    @app.route('/<path:path>')
+    def catch_all(path):
+        if path and os.path.exists(os.path.join(app.template_folder, f'{path}.html')):
+            return render_template(f'{path}.html')
+        return render_template('index.html')
+
+    # ── Health check route ──
+    @app.route('/api/health')
     def health():
         return {'status': 'ok', 'app': 'ResQr API', 'version': '1.0.0'}
 
     @app.route('/uploads/qrcodes/<filename>')
     def serve_qr(filename):
-        from flask import send_from_directory
         return send_from_directory(os.path.join(app.config['UPLOAD_FOLDER'], 'qrcodes'), filename)
 
     @app.route('/uploads/documents/<filename>')
     def serve_doc(filename):
-        from flask import send_from_directory
         return send_from_directory(os.path.join(app.config['UPLOAD_FOLDER'], 'documents'), filename)
 
     return app
