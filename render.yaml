@@ -6,11 +6,8 @@ services:
     env: python
     region: oregon
     plan: free
-    buildCommand: |
-      pip install --upgrade pip
-      pip install -r requirements.txt
-    startCommand: |
-      gunicorn -w 4 -b 0.0.0.0:$PORT run:app
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: gunicorn -w 4 -b 0.0.0.0:$PORT run:app
     envVars:
       - key: FLASK_ENV
         value: production
