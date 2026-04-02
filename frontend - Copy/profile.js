@@ -1,6 +1,6 @@
 const token = localStorage.getItem("token");
 if (!token || localStorage.getItem("role") !== "user") {
-  alert("Access denied. Please login to your user account.");
+  showToast("Access denied. Please login to your user account.", "error");
   window.location.href = "./login.html";
 }
 
@@ -33,13 +33,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       renderProfile(data.user);
     } else {
       console.error("Error fetching profile:", data.error);
-      alert("Failed to load profile. Please login again.");
+      showToast("Failed to load profile. Please login again.", "error");
       localStorage.clear();
       window.location.href = "./login.html";
     }
   } catch (error) {
     console.error("Error:", error);
-    alert("Server unreachable. Please check your backend.");
+    showToast("Server unreachable. Please check your backend.", "error");
   }
 });
 

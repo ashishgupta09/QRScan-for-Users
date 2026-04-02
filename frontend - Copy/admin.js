@@ -1,6 +1,6 @@
 const token = localStorage.getItem("token");
 if (!token || localStorage.getItem("role") !== "admin") {
-  alert("Access denied. Please login as Admin.");
+  showToast("Access denied. Please login as Admin.", "error");
   window.location.href = "./login.html";
 }
 
@@ -98,16 +98,17 @@ async function updateStatus(id, action) {
     const result = await response.json();
 
     if (response.ok) {
-      alert(result.message);
+      showToast(result.message, "success");
       fetchUsers(); // Refresh the list
       if (action === "approve") {
         document.querySelector(".approvedBox").style.display = "flex";
       }
     } else {
-      alert("Error: " + (result.error || "Server error"));
+      showToast(result.error || "Something went wrong", "error");
     }
   } catch (error) {
     console.error("Error:", error);
+    showToast("Server unreachable. Please retry.", "error");
   }
 }
 

@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const password = document.getElementById("password").value.trim();
 
       if (!email || !password) {
-        alert("Please enter both email and password");
+        showToast("Please enter both email and password", "error");
         return;
       }
 
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
           );
           localStorage.setItem("role", isAdminPage ? "admin" : "user");
 
-          alert("Login successful!");
+          showToast("Login successful!", "success");
 
           if (isAdminPage || result.role === "admin") {
             window.location.href = "./dashboard.html";
@@ -49,11 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = "./profile.html";
           }
         } else {
-          alert("Login failed: " + (result.error || "Invalid credentials"));
+          showToast(result.error || "Invalid credentials", "error");
         }
       } catch (error) {
         console.error("Error:", error);
-        alert("Connection error. Is the backend running?");
+        showToast("Connection error. Is the backend running?", "error");
       }
     });
   }

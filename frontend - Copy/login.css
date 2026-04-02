@@ -11,7 +11,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing-2xl) var(--spacing-7xl);
+  padding: 12px 20px;
   position: fixed;
   top: 0;
   left: 0;
@@ -25,22 +25,19 @@
 }
 
 .brand-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
   background: #ff5470;
-  border-radius: var(--radius-sm);
   color: white;
+  padding: 2px 0px;
+  border-radius: 1px;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
 }
 
 .brand-name {
   color: white;
   font-weight: 700;
-  font-size: 1.8rem;
+  font-size: 22.4px;
 }
 
 .site-nav {
@@ -100,6 +97,7 @@
   text-align: center;
   height: 78px;
 }
+
 .login-page .lock-icon {
   font-size: 2rem;
   position: relative;
@@ -175,38 +173,20 @@
 /* =========================================================================
    Responsive Design - Mobile (≤480px)
    ========================================================================= */
-@media (max-width: 480px) {
-  .site-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
-    padding: 18px 20px;
-  }
-
-  .site-nav {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .card-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 18px 16px 12px;
-  }
-
-  .lock-icon {
-    position: static;
-    left: auto;
-    top: auto;
-    margin: 4px 0 8px;
-  }
-
-  .card-header h1 {
-    position: static;
+@media (max-width: 900px) {
+  .login-page .page-body {
+    padding: 120px 18px 32px;
   }
 
   .login-card {
     border-radius: 18px;
+  }
+
+  .login-form {
+    padding: var(--spacing-4xl) var(--spacing-3xl) var(--spacing-4xl);
+  }
+
+  .login-form label {
+    font-size: 1rem;
   }
 }

@@ -36,7 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
             diseaseFields.classList.add("show");
           } else {
             diseaseFields.classList.remove("show");
-            document.getElementById("diseaseDetails").value = "";
+            const diseaseDetails = document.getElementById("diseaseDetails");
+            if (diseaseDetails) {
+              diseaseDetails.value = "";
+            }
           }
         });
       });
@@ -257,12 +260,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         <strong>Email:</strong> ${result.user.email}<br/>
                         <strong>Status:</strong> ${result.user.status}
                     `;
+          showToast("Registration submitted successfully", "success");
         } else {
-          alert("Registration failed: " + (result.error || "Server error"));
+          showToast(result.error || "Registration failed, please try again", "error");
         }
       } catch (error) {
         console.error("Error:", error);
-        alert("Connection error. Is the backend running?");
+        showToast("Connection error. Is the backend running?", "error");
       } finally {
         submitBtn.disabled = false;
         btnText.style.opacity = "1";
