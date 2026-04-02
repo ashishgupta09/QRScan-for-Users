@@ -8,13 +8,14 @@
 .hero-section {
     background-color: var(--primary-red);
     color: var(--white);
-    min-height: 80vh;
+    min-height: unset;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 100px 24px;
+    padding:100px 0 20px 0;
+    flex: 1;
 }
 
 .hero-content {
