@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Management Dashboard</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="../css/dashboard.css" />
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="brand">
+        <span class="brand-icon">SOS</span>
+        <span class="brand-name">ResQr Admin</span>
+      </div>
+      <nav class="site-nav">
+        <a href="#" id="logoutBtn">Logout</a>
+      </nav>
+    </header>
+
+    <div class="heading">
+      <span>User Management Dashboard</span>
+    </div>
+    <div class="approvedBox">
+      <span>User Approved and QR code generated</span>
+      <button type="button" aria-label="close" class="close-btn">
+        &times;
+      </button>
+    </div>
+
+    <div class="userTableCard">
+      <table class="userTable" aria-label="User table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Blood Group</th>
+            <th>Disease</th>
+            <th>Status</th>
+            <th>QR Code</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data populated by admin.js -->
+        </tbody>
+      </table>
+    </div>
+    <script src="../js/admin.js"></script>
+  </body>
+</html>

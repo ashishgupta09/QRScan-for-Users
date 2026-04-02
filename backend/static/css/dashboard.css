@@ -1,0 +1,300 @@
+/* =============================================================================
+   DASHBOARD - User Management & Data Display
+   ============================================================================= */
+
+/* =========================================================================
+   Heading Styles
+   ========================================================================= */
+.heading {
+  margin-bottom: 0px;
+}
+
+.heading span {
+  font-weight: 400;
+  font-size: clamp(24px, 6vw, 35px);
+  display: block;
+  padding: 20px 20px 0px;
+}
+
+/* =========================================================================
+   Status Indicators
+   ========================================================================= */
+.approvedBox {
+  width: 100%;
+  min-height: 50px;
+  background-color: #d1e7dd;
+  display: none;
+  align-items: center;
+  font-size: clamp(14px, 3vw, 16px);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  color: #0f5132;
+  border: 1px solid #badbcc;
+  justify-content: space-between;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+.approvedBox .close-btn {
+  background: none;
+  border: none;
+  font-size: 26px;
+  color: var(--muted-gray);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: var(--transition-color);
+}
+
+.approvedBox .close-btn:hover {
+  color: #0f5132;
+  opacity: 0.8;
+}
+
+/* =========================================================================
+   Table Container & Structure
+   ========================================================================= */
+.userTableCard {
+  margin: 10px;
+  background: var(--white);
+  border: 1px solid var(--border-gray);
+  box-shadow:
+    rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  box-sizing: border-box;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 10px;
+}
+
+.userTable {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+  font-family: var(--font-system);
+  color: var(--text-dark);
+  min-width: 100%;
+}
+
+/* Table Header */
+.userTable thead th {
+  height: 45px;
+  background: var(--table-header);
+  color: #1a1a1a;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  padding: 12px 15px;
+  white-space: nowrap;
+}
+
+/* Table Body */
+.userTable tbody td {
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--table-body);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* =========================================================================
+   Badge & Pill Components
+   ========================================================================= */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--white);
+  white-space: nowrap;
+  text-transform: capitalize;
+}
+
+.bloodPill {
+  background: #dc3545;
+}
+
+.statusPill.pending {
+  background: #ffc107;
+  color: #1a1a1a;
+}
+
+.statusPill.approved {
+  background: #198754;
+  color: #ffffff;
+}
+
+.statusPill.rejected {
+  background: #dc3545;
+  color: #ffffff;
+}
+
+/* =========================================================================
+   Action Buttons
+   ========================================================================= */
+.btn-approve {
+  background: #198754;
+  color: #ffffff;
+  border: none;
+  padding: 6px 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.btn-reject {
+  background: #dc3545;
+  color: #ffffff;
+  border: none;
+  padding: 6px 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-left: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.qrBtn {
+  height: 32px;
+  min-width: 80px;
+  border: none;
+  border-radius: 6px;
+  background: #0dcaf0;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.btn-approve:hover,
+.btn-reject:hover,
+.qrBtn:hover {
+  opacity: 0.85;
+}
+
+/* =========================================================================
+   Responsive Design - Extra Small (≤480px)
+   ========================================================================= */
+@media (max-width: 480px) {
+  /* body {
+        padding: 8px;
+    } */
+
+  .heading span {
+    font-size: 24px;
+  }
+
+  .approvedBox {
+    font-size: 13px;
+    padding: 10px 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .approvedBox span:first-child {
+    width: 100%;
+  }
+
+  .approvedBox .fa-times {
+    font-size: 20px;
+  }
+
+  .userTableCard {
+    padding: 10px 8px;
+    overflow-x: auto;
+  }
+
+  .userTable thead th {
+    font-size: 12px;
+    padding: 6px;
+    height: 36px;
+  }
+
+  .userTable tbody td {
+    font-size: 12px;
+    padding: 6px;
+    height: 42px;
+  }
+
+  .pill {
+    height: 22px;
+    font-size: 11px;
+    padding: 0 6px;
+  }
+
+  .qrBtn {
+    height: 30px;
+    min-width: 60px;
+    font-size: 12px;
+  }
+}
+
+/* =========================================================================
+   Responsive Design - Tablet (≤768px)
+   ========================================================================= */
+@media (max-width: 768px) {
+  /* body {
+        padding: 10px;
+    } */
+
+  .heading span {
+    font-size: 28px;
+  }
+
+  .approvedBox {
+    font-size: 14px;
+    padding: 12px 14px;
+  }
+
+  .userTable thead th {
+    font-size: 14px;
+    padding: 8px;
+    height: 38px;
+  }
+
+  .userTable tbody td {
+    font-size: 13px;
+    padding: 8px;
+    height: 45px;
+  }
+
+  .pill {
+    height: 24px;
+    font-size: 12px;
+  }
+
+  .qrBtn {
+    height: 32px;
+    font-size: 13px;
+  }
+}
+
+/* =========================================================================
+   Responsive Design - Desktop (≥1024px)
+   ========================================================================= */
+@media (min-width: 1024px) {
+  /* body {
+    padding: 20px;
+    margin: 0 auto;
+  } */
+
+  .userTableCard {
+    overflow-x: visible;
+  }
+}
