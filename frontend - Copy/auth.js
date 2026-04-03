@@ -63,7 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("role", role);
 
         showToast(`Login successful as ${role}`, "success");
-        window.location.href = role === "admin" ? "./dashboard.html" : "./profile.html";
+        const redirect = role === "admin" ? "./dashboard.html?login=success" : "./profile.html?login=success";
+        window.location.href = redirect;
       } else {
         showToast(result.error || "Invalid credentials", "error");
       }
