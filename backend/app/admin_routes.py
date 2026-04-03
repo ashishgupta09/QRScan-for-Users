@@ -4,7 +4,7 @@ import smtplib
 import ssl
 from email.message import EmailMessage
 from datetime import datetime, timedelta
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, jsonify, render_template, current_app
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import check_password_hash, generate_password_hash
 from .models import db, User, Admin, AdminResetToken
@@ -161,10 +161,14 @@ def admin_forgot_password():
     db.session.add(entry)
     db.session.commit()
 
-    sent = _send_admin_reset_email(email, reset_token)
+    host_url = request.host_url.rstrip('/')
+    reset_link = f"{host_url}/reset_confirm.html?email={email}&role=admin"
+
+    sent = _send_admin_reset_email(email, reset_token, reset_link)
     response = {'message': generic_message, 'expires_at': expires_at.isoformat() + 'Z'}
-    if os.getenv('DEBUG_RESET_TOKEN') == '1' and not sent:
+    if (os.getenv('DEBUG_RESET_TOKEN') == '1' or not sent) and current_app.config.get('ENV') != 'production':
         response['reset_token'] = reset_token
+        response['reset_link'] = reset_link
     return jsonify(response), 200
 
 
@@ -202,7 +206,7 @@ def admin_reset_password():
     return jsonify({'message': 'Password reset successful'}), 200
 
 
-def _send_admin_reset_email(email, code):
+def _send_admin_reset_email(email, code, reset_link=None):
     smtp_host = os.getenv('SMTP_HOST')
     smtp_port = int(os.getenv('SMTP_PORT', '587'))
     smtp_user = os.getenv('SMTP_USER')
@@ -210,7 +214,7 @@ def _send_admin_reset_email(email, code):
     from_addr = os.getenv('SMTP_FROM', smtp_user or 'no-reply@resqr.local')
 
     if not smtp_host or not smtp_user or not smtp_pass:
-        print(f"[AdminReset] Email not configured. Code for {email}: {code}")
+        print(f"[AdminReset] Email not configured. Code for {email}: {code} Link: {reset_link}")
         return False
 
     msg = EmailMessage()
@@ -219,6 +223,7 @@ def _send_admin_reset_email(email, code):
     msg['To'] = email
     msg.set_content(
         f"Here is your admin password reset code: {code}\n"
+        f"Reset link: {reset_link or 'open the admin portal to enter the code'}\n"
         "It expires in 30 minutes. If you did not request this, you can ignore this email."
     )
 

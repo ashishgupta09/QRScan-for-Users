@@ -180,10 +180,13 @@ def forgot_password():
     db.session.add(reset_entry)
     db.session.commit()
 
-    sent = _send_reset_email(email, reset_token)
+    host_url = request.host_url.rstrip('/')
+    reset_link = f"{host_url}/reset_confirm.html?email={email}&role=user"
+    sent = _send_reset_email(email, reset_token, reset_link)
     response = {'message': generic_message, 'expires_at': expires_at.isoformat() + 'Z'}
-    if os.getenv('DEBUG_RESET_TOKEN') == '1' and not sent:
+    if (os.getenv('DEBUG_RESET_TOKEN') == '1' or not sent) and current_app.config.get('ENV') != 'production':
         response['reset_token'] = reset_token
+        response['reset_link'] = reset_link
     return jsonify(response), 200
 
 
@@ -278,7 +281,7 @@ def verify_email():
     return jsonify({'message': 'Email verified successfully', 'email': email}), 200
 
 
-def _send_reset_email(email, code):
+def _send_reset_email(email, code, reset_link=None):
     smtp_host = os.getenv('SMTP_HOST')
     smtp_port = int(os.getenv('SMTP_PORT', '587'))
     smtp_user = os.getenv('SMTP_USER')
@@ -286,7 +289,7 @@ def _send_reset_email(email, code):
     from_addr = os.getenv('SMTP_FROM', smtp_user or 'no-reply@resqr.local')
 
     if not smtp_host or not smtp_user or not smtp_pass:
-        print(f"[PasswordReset] Email not configured. Code for {email}: {code}")
+        print(f"[PasswordReset] Email not configured. Code for {email}: {code} Link: {reset_link}")
         return False
 
     msg = EmailMessage()
@@ -295,6 +298,7 @@ def _send_reset_email(email, code):
     msg['To'] = email
     msg.set_content(
         f"Here is your password reset code: {code}\n"
+        f"Reset link: {reset_link or 'open the app to enter the code'}\n"
         "It expires in 30 minutes. If you did not request this, you can ignore this email."
     )
 
