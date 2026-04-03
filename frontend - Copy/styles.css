@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 /* =============================================================================
    GLOBAL STYLES - Core Theme & Base Elements
    ============================================================================= */
@@ -337,6 +337,96 @@ body {
   overflow-x: hidden;
 }
 
+/* Toasts - default (right side). Dashboard may override via .toast-wide elsewhere */
+.toast-stack {
+  position: fixed;
+  top: 72px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1500;
+  max-width: 360px;
+  align-items: flex-end;
+}
+
+.toast {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-left: 4px solid var(--primary-red);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.12);
+  padding: 12px 14px;
+  border-radius: 12px;
+  display: grid;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: 0.28s ease;
+  min-width: 260px;
+  width: 100%;
+  max-width: 340px;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast.hide {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+.toast .toast-content {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+.toast .toast-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--primary-red);
+  display: inline-flex;
+}
+
+.toast .toast-bar {
+  display: none;
+}
+
+.toast .toast-close {
+  margin-left: auto;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+
+.toast.success {
+  border-left-color: #2e7d32;
+}
+.toast.success .toast-dot {
+  background: #2e7d32;
+}
+.toast.error {
+  border-left-color: #c62828;
+}
+.toast.error .toast-dot {
+  background: #c62828;
+}
+.toast.info {
+  border-left-color: #0cccef;
+}
+.toast.info .toast-dot {
+  background: #0cccef;
+}
+
 /* =========================================================================
    ResQr Brand Standard Styles
    ========================================================================= */
@@ -454,7 +544,8 @@ body {
 /* Toast notifications */
 .toast-stack {
   position: fixed;
-  top: 16px;
+  /* top: 16px; */
+  top: 72px;
   left: 2vw;
   right: 2vw;
   display: flex;
@@ -762,11 +853,11 @@ body {
     min-height: auto;
   }
 
-.cards-grid {
-  grid-template-columns: 1fr;
-  max-width: 400px;
-  margin: 0 auto;
-}
+  .cards-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto;
+  }
 }
 
 /* =========================================================================

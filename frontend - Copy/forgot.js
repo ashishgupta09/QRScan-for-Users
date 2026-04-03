@@ -14,13 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       const email = fpEmail.value.trim();
       if (!email) {
-        showToast("Please enter the email linked to your account", "error");
+        showToast("Please enter the email linked to your account", "error", 5000);
         return;
       }
 
       sendCodeBtn.disabled = true;
-      fpStatus.textContent = "Sending reset code...";
-      fpStatus.style.color = "#444";
+      fpStatus.textContent = "";
 
       try {
         const response = await fetch(
@@ -33,18 +32,20 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         const result = await response.json();
         if (response.ok) {
-          fpStatus.textContent = result.message || "Reset instructions sent. Check your email for the code.";
-          fpStatus.style.color = "#2e7d32";
+          // If backend returns token in dev, include in toast for convenience
+          const extra = result.reset_token ? ` (OTP: ${result.reset_token})` : "";
+          showToast(
+            (result.message || "Reset instructions sent.") + extra,
+            "success",
+            5000,
+          );
           fpConfirmEmail.value = email;
-          showToast("OTP sent. Please check your email.", "success");
         } else {
-          fpStatus.textContent = result.error || "Unable to start reset.";
-          fpStatus.style.color = "#d32f2f";
+          showToast(result.error || "Unable to start reset.", "error", 5000);
         }
       } catch (err) {
         console.error(err);
-        fpStatus.textContent = "Network error. Please try again.";
-        fpStatus.style.color = "#d32f2f";
+        showToast("Network error. Please try again.", "error", 5000);
       } finally {
         sendCodeBtn.disabled = false;
       }
