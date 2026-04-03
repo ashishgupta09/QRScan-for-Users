@@ -61,4 +61,28 @@
       }),
     );
   }
+
+  // Highlight current nav item
+  const currentPath = window.location.pathname.replace(/\\/g, "/");
+  const normalize = (href) => {
+    try {
+      const url = new URL(href, window.location.origin);
+      let p = url.pathname;
+      if (p === "/") p = "/index.html";
+      return p;
+    } catch (_) {
+      return href;
+    }
+  };
+  if (siteNav) {
+    const links = siteNav.querySelectorAll("a");
+    links.forEach((link) => {
+      const linkPath = normalize(link.getAttribute("href") || "");
+      const pagePath =
+        currentPath === "/" ? "/index.html" : currentPath.toLowerCase();
+      if (pagePath.endsWith(linkPath.toLowerCase())) {
+        link.classList.add("active");
+      }
+    });
+  }
 })();
