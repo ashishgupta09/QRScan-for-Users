@@ -84,13 +84,19 @@ r = requests.get(f"{BASE}/api/user/profile", headers={
 })
 print(f"  Status: {r.status_code} | Name: {r.json()['user']['name']}")
 
-# 8. Admin login
+# 8. Admin login (now supports two default admins)
 sep("8. Admin Login")
-r = requests.post(f"{BASE}/api/admin/login", json={
-    "email": "admin@resqr.com",
+admin_login_body = {
+    "email": "admin1@resqr.com",
     "password": "admin123",
-})
-admin_token = r.json().get("token")
+}
+r = requests.post(f"{BASE}/api/admin/login", json=admin_login_body)
+if r.status_code != 200:
+    # fallback to legacy default
+    admin_login_body["email"] = "admin@resqr.com"
+    r = requests.post(f"{BASE}/api/admin/login", json=admin_login_body)
+
+admin_token = (r.json() or {}).get("token", "")
 print(f"  Status: {r.status_code} | Token: {admin_token[:30]}...")
 
 # 9. Admin view all users

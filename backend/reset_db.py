@@ -5,19 +5,21 @@ from werkzeug.security import generate_password_hash
 app = create_app()
 
 with app.app_context():
-    print("🗑️  Dropping all tables...")
+    print("[reset] Dropping all tables...")
     db.drop_all()
-    
-    print("🏗️  Recreating all tables from scratch...")
+
+    print("[reset] Recreating all tables from scratch...")
     db.create_all()
-    
-    print("🌱 Seeding default admin...")
-    default_admin = Admin(
-        email='admin@resqr.com',
-        password_hash=generate_password_hash('admin123')
-    )
-    db.session.add(default_admin)
+
+    print("[reset] Seeding default admins...")
+    default_admins = [
+        ("admin@resqr.com", "admin123"),
+        ("admin1@resqr.com", "admin123"),
+    ]
+    for email, password in default_admins:
+        db.session.add(Admin(email=email, password_hash=generate_password_hash(password)))
+        print(f"   - {email} / {password}")
+
     db.session.commit()
-    
-    print("✅ Database has been completely reset!")
-    print("Admin: admin@resqr.com / admin123")
+    print("[reset] Database has been completely reset!")
+    print("[reset] Admins created: admin@resqr.com, admin1@resqr.com (password: admin123)")

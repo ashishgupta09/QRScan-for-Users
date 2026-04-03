@@ -1,7 +1,13 @@
+import os
+import secrets
+import smtplib
+import ssl
+from email.message import EmailMessage
+from datetime import datetime, timedelta
 from flask import Blueprint, request, jsonify, render_template
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from werkzeug.security import check_password_hash
-from .models import db, User, Admin
+from werkzeug.security import check_password_hash, generate_password_hash
+from .models import db, User, Admin, AdminResetToken
 from .qr_utils import generate_qr_code
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/api/admin')
@@ -124,3 +130,101 @@ def scan_qr(qr_token):
 
     # Switch from JSON to a beautiful Scan Result Page
     return render_template('scan_result.html', user=user)
+
+
+# ─── ADMIN FORGOT PASSWORD ─────────────────────────────────────────────────────
+@admin_bp.route('/forgot-password', methods=['POST'])
+def admin_forgot_password():
+    data = request.get_json() or {}
+    email = data.get('email', '').strip()
+
+    if not email:
+        return jsonify({'error': 'Email is required'}), 400
+
+    admin = Admin.query.filter_by(email=email).first()
+    generic_message = 'If an account exists for this email, a reset code has been sent.'
+    if not admin:
+        return jsonify({'message': generic_message}), 200
+
+    AdminResetToken.query.filter_by(admin_id=admin.id, used=False).update({'used': True})
+
+    reset_token = f"{secrets.randbelow(1_000_000):06d}"
+    token_hash = generate_password_hash(reset_token)
+    expires_at = datetime.utcnow() + timedelta(minutes=30)
+
+    entry = AdminResetToken(
+        admin_id=admin.id,
+        token_hash=token_hash,
+        expires_at=expires_at,
+        used=False,
+    )
+    db.session.add(entry)
+    db.session.commit()
+
+    sent = _send_admin_reset_email(email, reset_token)
+    response = {'message': generic_message, 'expires_at': expires_at.isoformat() + 'Z'}
+    if os.getenv('DEBUG_RESET_TOKEN') == '1' and not sent:
+        response['reset_token'] = reset_token
+    return jsonify(response), 200
+
+
+# ─── ADMIN RESET PASSWORD ──────────────────────────────────────────────────────
+@admin_bp.route('/reset-password', methods=['POST'])
+def admin_reset_password():
+    data = request.get_json() or {}
+    email = data.get('email', '').strip()
+    token = data.get('token', '').strip()
+    new_password = data.get('new_password', '').strip()
+
+    if not email or not token or not new_password:
+        return jsonify({'error': 'Email, token, and new password are required'}), 400
+    if len(new_password) < 6:
+        return jsonify({'error': 'Password must be at least 6 characters long'}), 400
+
+    admin = Admin.query.filter_by(email=email).first()
+    if not admin:
+        return jsonify({'error': 'Invalid email or token'}), 400
+
+    now = datetime.utcnow()
+    reset_entry = AdminResetToken.query.filter(
+        AdminResetToken.admin_id == admin.id,
+        AdminResetToken.used == False,
+        AdminResetToken.expires_at >= now
+    ).order_by(AdminResetToken.created_at.desc()).first()
+
+    if not reset_entry or not check_password_hash(reset_entry.token_hash, token):
+        return jsonify({'error': 'Invalid or expired reset token'}), 400
+
+    admin.password_hash = generate_password_hash(new_password)
+    reset_entry.used = True
+    db.session.commit()
+
+    return jsonify({'message': 'Password reset successful'}), 200
+
+
+def _send_admin_reset_email(email, code):
+    smtp_host = os.getenv('SMTP_HOST')
+    smtp_port = int(os.getenv('SMTP_PORT', '587'))
+    smtp_user = os.getenv('SMTP_USER')
+    smtp_pass = os.getenv('SMTP_PASS')
+    from_addr = os.getenv('SMTP_FROM', smtp_user or 'no-reply@resqr.local')
+
+    if not smtp_host or not smtp_user or not smtp_pass:
+        print(f"[AdminReset] Email not configured. Code for {email}: {code}")
+        return False
+
+    msg = EmailMessage()
+    msg['Subject'] = 'Your ResQr admin password reset code'
+    msg['From'] = from_addr
+    msg['To'] = email
+    msg.set_content(
+        f"Here is your admin password reset code: {code}\n"
+        "It expires in 30 minutes. If you did not request this, you can ignore this email."
+    )
+
+    context = ssl.create_default_context()
+    with smtplib.SMTP(smtp_host, smtp_port) as server:
+        server.starttls(context=context)
+        server.login(smtp_user, smtp_pass)
+        server.send_message(msg)
+    return True

@@ -41,15 +41,19 @@ def create_app():
     with app.app_context():
         db.create_all()
 
-        # Seed default admin if none exists
-        if not Admin.query.first():
-            default_admin = Admin(
-                email='admin@resqr.com',
-                password_hash=generate_password_hash('admin123')
-            )
-            db.session.add(default_admin)
+        # Seed required admin accounts (idempotent so it won't overwrite existing)
+        default_admins = [
+            ('admin@resqr.com', 'admin123'),
+            ('admin1@resqr.com', 'admin123'),
+        ]
+        created_any = False
+        for email, password in default_admins:
+            if not Admin.query.filter_by(email=email).first():
+                db.session.add(Admin(email=email, password_hash=generate_password_hash(password)))
+                created_any = True
+                print(f'[ok] Admin created: {email} / {password}')
+        if created_any:
             db.session.commit()
-            print('✅ Default admin created: admin@resqr.com / admin123')
 
     # ── Serve Frontend HTML Pages ──
     @app.route('/')
