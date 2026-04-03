@@ -10,15 +10,14 @@
     return stack;
   };
 
-  const buildToast = (message, type = "info", duration = 3800) => {
+  // Simple banner toast (full-width) used only on dashboard
+  const buildToast = (message, type = "info", duration = 5000) => {
     const stack = ensureToastStack();
     const toast = document.createElement("div");
-    toast.className = `toast ${type}`;
+    toast.className = `toast toast-banner ${type}`;
     toast.setAttribute("role", "status");
     toast.innerHTML = `
-      <div class="toast-bar"></div>
       <div class="toast-content">
-        <span class="toast-dot"></span>
         <span>${message}</span>
         <button class="toast-close" aria-label="Dismiss notification">&times;</button>
       </div>
@@ -26,12 +25,11 @@
 
     const close = () => {
       toast.classList.add("hide");
-      setTimeout(() => toast.remove(), 260);
+      setTimeout(() => toast.remove(), 200);
     };
 
     toast.querySelector(".toast-close").addEventListener("click", close);
     stack.appendChild(toast);
-    // Trigger animation
     requestAnimationFrame(() => toast.classList.add("show"));
 
     if (duration > 0) {
@@ -40,7 +38,7 @@
   };
 
   window.showToast = (message, type = "info", duration) =>
-    buildToast(message, type, duration || 3800);
+    buildToast(message, type, duration || 5000);
 
   // Mobile nav toggle
   const navToggle = document.querySelector(".nav-toggle");

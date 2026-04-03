@@ -28,21 +28,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const diseaseYes = document.getElementById("diseaseYes");
     const diseaseNo = document.getElementById("diseaseNo");
     const diseaseFields = document.getElementById("diseaseFields");
+    const diseaseDoc = document.getElementById("disease_document");
+    const toggleDiseaseFields = () => {
+      if (!diseaseFields) return;
+      const show = diseaseYes && diseaseYes.checked;
+      diseaseFields.classList.toggle("show", show);
+      if (!show && diseaseDoc) {
+        diseaseDoc.value = ""; // clear stale file when switching back to No
+      }
+    };
 
     if (diseaseYes && diseaseNo) {
       [diseaseYes, diseaseNo].forEach((radio) => {
-        radio.addEventListener("change", () => {
-          if (diseaseYes.checked) {
-            diseaseFields.classList.add("show");
-          } else {
-            diseaseFields.classList.remove("show");
-            const diseaseDetails = document.getElementById("diseaseDetails");
-            if (diseaseDetails) {
-              diseaseDetails.value = "";
-            }
-          }
-        });
+        radio.addEventListener("change", toggleDiseaseFields);
       });
+      // set initial state on load
+      toggleDiseaseFields();
     }
 
     // Form submission
@@ -160,16 +161,10 @@ document.addEventListener("DOMContentLoaded", () => {
         clearError("diseaseErr");
       }
 
-      // Validate Disease Document if disease is "yes"
-      if (diseaseYes.checked) {
-        const doc = document.getElementById("disease_document");
-        if (!doc.files || doc.files.length === 0) {
-          showError("docErr");
-          isValid = false;
-        } else {
-          clearError("docErr");
-          doc.classList.add("valid");
-        }
+      // Disease document is optional even when "Yes" is selected.
+      const doc = document.getElementById("disease_document");
+      if (doc) {
+        clearError("docErr");
       }
 
       return isValid;
@@ -230,11 +225,10 @@ document.addEventListener("DOMContentLoaded", () => {
       ).value;
       formData.append("has_disease", hasDisease);
 
-      if (hasDisease === "yes") {
-        const docFile = document.getElementById("disease_document").files[0];
-        if (docFile) {
-          formData.append("disease_document", docFile);
-        }
+      // Attach document only if provided (optional even when disease=yes)
+      const docFile = document.getElementById("disease_document").files[0];
+      if (docFile) {
+        formData.append("disease_document", docFile);
       }
 
       try {

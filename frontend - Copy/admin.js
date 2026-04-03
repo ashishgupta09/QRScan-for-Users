@@ -14,6 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelector(".approvedBox").style.display = "none";
     });
   }
+  // Auto-hide approved box if visible on load (safety)
+  const approvedBox = document.querySelector(".approvedBox");
+  if (approvedBox && approvedBox.style.display !== "none") {
+    setTimeout(() => (approvedBox.style.display = "none"), 5000);
+  }
   // Logout functionality
   const logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
@@ -50,6 +55,10 @@ async function fetchUsers() {
 }
 
 function renderUsers(users) {
+  // Sort ascending by ID for clear 1..N ordering
+  users = [...users].sort(
+    (a, b) => Number(a.id || 0) - Number(b.id || 0),
+  );
   const tbody = document.querySelector(".userTable tbody");
   tbody.innerHTML = "";
 
@@ -82,8 +91,6 @@ function renderUsers(users) {
 }
 
 async function updateStatus(id, action) {
-  if (!confirm(`Are you sure you want to ${action} this user?`)) return;
-
   try {
     const response = await fetch(
       `https://qrscan-for-users.onrender.com/api/admin/users/${id}/${action}`,
@@ -98,17 +105,23 @@ async function updateStatus(id, action) {
     const result = await response.json();
 
     if (response.ok) {
-      showToast(result.message, "success");
       fetchUsers(); // Refresh the list
-      if (action === "approve") {
-        document.querySelector(".approvedBox").style.display = "flex";
+      const box = document.querySelector(".approvedBox");
+      if (box) {
+        const msg = result.message || (action === "approve" ? "User approved" : "User rejected");
+        box.querySelector("span").textContent = msg;
+        box.classList.toggle("error", action === "reject");
+        box.style.display = "flex";
+        setTimeout(() => {
+          box.style.display = "none";
+        }, 5000);
       }
     } else {
-      showToast(result.error || "Something went wrong", "error");
+      showToast(result.error || "Something went wrong", "error", 5000);
     }
   } catch (error) {
     console.error("Error:", error);
-    showToast("Server unreachable. Please retry.", "error");
+    showToast("Server unreachable. Please retry.", "error", 5000);
   }
 }
 
