@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 from flask import Flask, render_template, send_from_directory, send_file
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
@@ -11,6 +12,8 @@ from .models import db, Admin
 # Resolve paths relative to this package so templates load in any environment
 PACKAGE_DIR = os.path.abspath(os.path.dirname(__file__))
 FRONTEND_DIR = os.path.abspath(os.path.join(PACKAGE_DIR, '..', 'frontend - Copy'))
+BASE_DIR = os.path.abspath(os.path.join(PACKAGE_DIR, '..'))
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 
 def create_app():

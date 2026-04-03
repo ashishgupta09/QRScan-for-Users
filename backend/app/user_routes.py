@@ -9,7 +9,7 @@ from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
-from .models import db, User, PasswordResetToken
+from .models import db, User, PasswordResetToken, RegistrationOTP
 
 user_bp = Blueprint('user', __name__, url_prefix='/api/user')
 
@@ -94,7 +94,28 @@ def register():
     db.session.add(user)
     db.session.commit()
 
-    return jsonify({'message': 'Form submitted successfully', 'user': user.to_dict()}), 201
+    # Issue email verification OTP (15 min)
+    RegistrationOTP.query.filter_by(email=email, used=False).update({'used': True})
+    otp_code = f"{secrets.randbelow(1_000_000):06d}"
+    otp_hash = generate_password_hash(otp_code)
+    expires_at = datetime.utcnow() + timedelta(minutes=15)
+    db.session.add(RegistrationOTP(
+        email=email,
+        token_hash=otp_hash,
+        expires_at=expires_at,
+        used=False
+    ))
+    db.session.commit()
+
+    host_url = request.host_url.rstrip('/')
+    verify_link = f"{host_url}/verify.html?email={email}"
+    _send_verification_email(email, otp_code, verify_link)
+
+    return jsonify({
+        'message': 'Form submitted successfully. Please verify your email.',
+        'user': user.to_dict(),
+        'verify_expires_at': expires_at.isoformat() + 'Z'
+    }), 201
 
 
 # --- USER LOGIN -------------------------------------------
@@ -227,6 +248,36 @@ def verify_reset():
     return jsonify({'message': 'Token verified', 'email': email}), 200
 
 
+# --- VERIFY REGISTRATION EMAIL (OTP) ---
+@user_bp.route('/verify-email', methods=['POST'])
+def verify_email():
+    data = request.get_json() or {}
+    email = str(data.get('email', '') or '').strip()
+    token = str(data.get('token', '') or '').strip()
+
+    if not email or not token:
+        return jsonify({'error': 'Email and token are required'}), 400
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({'error': 'Invalid email or token'}), 400
+
+    now = datetime.utcnow()
+    otp_entry = RegistrationOTP.query.filter(
+        RegistrationOTP.email == email,
+        RegistrationOTP.used == False,
+        RegistrationOTP.expires_at >= now
+    ).order_by(RegistrationOTP.created_at.desc()).first()
+
+    if not otp_entry or not check_password_hash(otp_entry.token_hash, token):
+        return jsonify({'error': 'Invalid or expired verification code'}), 400
+
+    otp_entry.used = True
+    db.session.commit()
+
+    return jsonify({'message': 'Email verified successfully', 'email': email}), 200
+
+
 def _send_reset_email(email, code):
     smtp_host = os.getenv('SMTP_HOST')
     smtp_port = int(os.getenv('SMTP_PORT', '587'))
@@ -245,6 +296,33 @@ def _send_reset_email(email, code):
     msg.set_content(
         f"Here is your password reset code: {code}\n"
         "It expires in 30 minutes. If you did not request this, you can ignore this email."
+    )
+
+    context = ssl.create_default_context()
+    with smtplib.SMTP(smtp_host, smtp_port) as server:
+        server.starttls(context=context)
+        server.login(smtp_user, smtp_pass)
+        server.send_message(msg)
+    return True
+
+
+def _send_verification_email(email, code, verify_link):
+    smtp_host = os.getenv('SMTP_HOST')
+    smtp_port = int(os.getenv('SMTP_PORT', '587'))
+    smtp_user = os.getenv('SMTP_USER')
+    smtp_pass = os.getenv('SMTP_PASS')
+    from_addr = os.getenv('SMTP_FROM', smtp_user or 'no-reply@resqr.local')
+
+    if not smtp_host or not smtp_user or not smtp_pass:
+        print(f"[VerifyEmail] Email not configured. Code for {email}: {code} | Link: {verify_link}")
+        return False
+
+    msg = EmailMessage()
+    msg['Subject'] = 'Verify your ResQr email'
+    msg['From'] = from_addr
+    msg['To'] = email
+    msg.set_content(
+        f"Welcome to ResQr!\n\nYour verification code: {code}\nVerification link: {verify_link}\nThis code expires in 15 minutes."
     )
 
     context = ssl.create_default_context()
