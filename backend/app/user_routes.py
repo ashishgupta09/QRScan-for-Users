@@ -1,11 +1,15 @@
 import os
 import re
-from datetime import datetime
+import secrets
+import smtplib
+import ssl
+from email.message import EmailMessage
+from datetime import datetime, timedelta
 from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
-from .models import db, User
+from .models import db, User, PasswordResetToken
 
 user_bp = Blueprint('user', __name__, url_prefix='/api/user')
 
@@ -17,15 +21,14 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-# ─── USER REGISTRATION ──────────────────────────────────────────────
+# --- USER REGISTRATION -------------------------------------------
 @user_bp.route('/register', methods=['POST'])
 def register():
     """
     Register a new user with form-data (multipart).
-    Required fields: email, password, name, address, phone, dob, blood_group, has_disease
-    Optional: alternate_phone, disease_document (file, required if has_disease=yes)
+    Required: email, password, name, address, phone, dob, blood_group, has_disease
+    Optional: alternate_phone. No file upload required even if disease=yes.
     """
-    # Collect data from JSON (if provided) or Form (if multipart)
     if request.is_json:
         data = request.get_json() or {}
     else:
@@ -41,7 +44,6 @@ def register():
     blood_group = data.get('blood_group', '').strip()
     has_disease_str = str(data.get('has_disease', '')).strip().lower()
 
-    # ── Validate required fields ──
     required_fields = {
         'email': email,
         'password': password,
@@ -51,56 +53,31 @@ def register():
         'dob': dob_str,
         'blood_group': blood_group,
     }
-
     for field, value in required_fields.items():
         if not value:
             return jsonify({'error': f'Missing or invalid field: {field}'}), 400
 
-    # ── Phone validation (10 digits) ──
     if not re.match(r'^\d{10}$', phone):
         return jsonify({'error': 'Phone number must be exactly 10 digits'}), 400
-
     if alternate_phone and not re.match(r'^\d{10}$', alternate_phone):
         return jsonify({'error': 'Alternate phone number must be exactly 10 digits'}), 400
 
-    # ── Blood group validation ──
     if blood_group not in VALID_BLOOD_GROUPS:
-        return jsonify({
-            'error': f'Invalid blood group. Must be one of: {", ".join(VALID_BLOOD_GROUPS)}'
-        }), 400
+        return jsonify({'error': f'Invalid blood group. Must be one of: {", ".join(VALID_BLOOD_GROUPS)}'}), 400
 
-    # ── DOB parsing ──
     try:
         dob = datetime.strptime(dob_str, '%Y-%m-%d').date()
     except ValueError:
         return jsonify({'error': 'DOB must be in YYYY-MM-DD format'}), 400
 
-    # ── Disease validation ──
     truthy_values = {'yes', 'true', '1', 'on'}
     falsy_values = {'no', 'false', '0', 'off'}
     has_disease = has_disease_str in truthy_values
-    # If client sends an unknown value, default to False so registration still succeeds
-    disease_doc_path = None
+    disease_doc_path = None  # file not required
 
-    if has_disease:
-        file = request.files.get('disease_document')
-        if not file or file.filename == '':
-            return jsonify({'error': 'Disease document is required when disease is "yes"'}), 400
-        if not allowed_file(file.filename):
-            return jsonify({'error': f'Allowed file types: {", ".join(ALLOWED_EXTENSIONS)}'}), 400
-
-        doc_dir = os.path.join(current_app.config['UPLOAD_FOLDER'], 'documents')
-        os.makedirs(doc_dir, exist_ok=True)
-        filename = secure_filename(f"{email}_{file.filename}")
-        filepath = os.path.join(doc_dir, filename)
-        file.save(filepath)
-        disease_doc_path = filepath
-
-    # ── Check duplicate email ──
     if User.query.filter_by(email=email).first():
         return jsonify({'error': 'Email already registered'}), 409
 
-    # ── Create user ──
     user = User(
         email=email,
         password_hash=generate_password_hash(password),
@@ -117,16 +94,12 @@ def register():
     db.session.add(user)
     db.session.commit()
 
-    return jsonify({
-        'message': 'Form submitted successfully',
-        'user': user.to_dict()
-    }), 201
+    return jsonify({'message': 'Form submitted successfully', 'user': user.to_dict()}), 201
 
 
-# ─── USER LOGIN ──────────────────────────────────────────────────────
+# --- USER LOGIN -------------------------------------------
 @user_bp.route('/login', methods=['POST'])
 def login():
-    # Collect data from JSON or Form
     if request.is_json:
         data = request.get_json() or {}
     else:
@@ -143,14 +116,10 @@ def login():
         return jsonify({'error': 'Invalid email or password'}), 401
 
     token = create_access_token(identity=str(user.id), additional_claims={'role': 'user'})
-    return jsonify({
-        'message': 'Login successful',
-        'token': token,
-        'user': user.to_dict()
-    }), 200
+    return jsonify({'message': 'Login successful', 'token': token, 'user': user.to_dict()}), 200
 
 
-# ─── GET OWN PROFILE ────────────────────────────────────────────────
+# --- GET OWN PROFILE -------------------------------------------
 @user_bp.route('/profile', methods=['GET'])
 @jwt_required()
 def profile():
@@ -158,5 +127,130 @@ def profile():
     user = User.query.get(user_id)
     if not user:
         return jsonify({'error': 'User not found'}), 404
-
     return jsonify({'user': user.to_dict()}), 200
+
+
+# --- FORGOT PASSWORD ---
+@user_bp.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    data = request.get_json() or {}
+    email = data.get('email', '').strip()
+
+    if not email:
+        return jsonify({'error': 'Email is required'}), 400
+
+    user = User.query.filter_by(email=email).first()
+    generic_message = 'If an account exists for this email, a reset code has been sent.'
+    if not user:
+        return jsonify({'message': generic_message}), 200
+
+    PasswordResetToken.query.filter_by(user_id=user.id, used=False).update({'used': True})
+
+    reset_token = f"{secrets.randbelow(1_000_000):06d}"
+    token_hash = generate_password_hash(reset_token)
+    expires_at = datetime.utcnow() + timedelta(minutes=30)
+
+    reset_entry = PasswordResetToken(
+        user_id=user.id,
+        token_hash=token_hash,
+        expires_at=expires_at,
+        used=False,
+    )
+    db.session.add(reset_entry)
+    db.session.commit()
+
+    sent = _send_reset_email(email, reset_token)
+    response = {'message': generic_message, 'expires_at': expires_at.isoformat() + 'Z'}
+    if os.getenv('DEBUG_RESET_TOKEN') == '1' and not sent:
+        response['reset_token'] = reset_token
+    return jsonify(response), 200
+
+
+# --- RESET PASSWORD ---
+@user_bp.route('/reset-password', methods=['POST'])
+def reset_password():
+    data = request.get_json() or {}
+    email = data.get('email', '').strip()
+    token = data.get('token', '').strip()
+    new_password = data.get('new_password', '').strip()
+
+    if not email or not token or not new_password:
+        return jsonify({'error': 'Email, token, and new password are required'}), 400
+    if len(new_password) < 6:
+        return jsonify({'error': 'Password must be at least 6 characters long'}), 400
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({'error': 'Invalid email or token'}), 400
+
+    now = datetime.utcnow()
+    reset_entry = PasswordResetToken.query.filter(
+        PasswordResetToken.user_id == user.id,
+        PasswordResetToken.used == False,
+        PasswordResetToken.expires_at >= now
+    ).order_by(PasswordResetToken.created_at.desc()).first()
+
+    if not reset_entry or not check_password_hash(reset_entry.token_hash, token):
+        return jsonify({'error': 'Invalid or expired reset token'}), 400
+
+    user.password_hash = generate_password_hash(new_password)
+    reset_entry.used = True
+    db.session.commit()
+
+    return jsonify({'message': 'Password reset successful'}), 200
+
+
+# --- VERIFY RESET TOKEN (UI step) ---
+@user_bp.route('/verify-reset', methods=['POST'])
+def verify_reset():
+    data = request.get_json() or {}
+    email = data.get('email', '').strip()
+    token = data.get('token', '').strip()
+
+    if not email or not token:
+        return jsonify({'error': 'Email and token are required'}), 400
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({'error': 'Invalid email or token'}), 400
+
+    now = datetime.utcnow()
+    reset_entry = PasswordResetToken.query.filter(
+        PasswordResetToken.user_id == user.id,
+        PasswordResetToken.used == False,
+        PasswordResetToken.expires_at >= now
+    ).order_by(PasswordResetToken.created_at.desc()).first()
+
+    if not reset_entry or not check_password_hash(reset_entry.token_hash, token):
+        return jsonify({'error': 'Invalid or expired reset token'}), 400
+
+    return jsonify({'message': 'Token verified', 'email': email}), 200
+
+
+def _send_reset_email(email, code):
+    smtp_host = os.getenv('SMTP_HOST')
+    smtp_port = int(os.getenv('SMTP_PORT', '587'))
+    smtp_user = os.getenv('SMTP_USER')
+    smtp_pass = os.getenv('SMTP_PASS')
+    from_addr = os.getenv('SMTP_FROM', smtp_user or 'no-reply@resqr.local')
+
+    if not smtp_host or not smtp_user or not smtp_pass:
+        print(f"[PasswordReset] Email not configured. Code for {email}: {code}")
+        return False
+
+    msg = EmailMessage()
+    msg['Subject'] = 'Your ResQr password reset code'
+    msg['From'] = from_addr
+    msg['To'] = email
+    msg.set_content(
+        f"Here is your password reset code: {code}\n"
+        "It expires in 30 minutes. If you did not request this, you can ignore this email."
+    )
+
+    context = ssl.create_default_context()
+    with smtplib.SMTP(smtp_host, smtp_port) as server:
+        server.starttls(context=context)
+        server.login(smtp_user, smtp_pass)
+        server.send_message(msg)
+    return True
+
