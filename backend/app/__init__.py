@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, send_from_directory, send_file
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from werkzeug.security import generate_password_hash
@@ -10,14 +10,15 @@ from .models import db, Admin
 
 # Resolve paths relative to this package so templates load in any environment
 PACKAGE_DIR = os.path.abspath(os.path.dirname(__file__))
+FRONTEND_DIR = os.path.abspath(os.path.join(PACKAGE_DIR, '..', 'frontend - Copy'))
 
 
 def create_app():
     app = Flask(
         __name__,
-        static_folder='../static',      # keep existing static setup
-        static_url_path='/static',
-        template_folder=os.path.join(PACKAGE_DIR, 'templates')  # point to app/templates
+        static_folder=FRONTEND_DIR,
+        static_url_path='',
+        template_folder=FRONTEND_DIR
     )
     app.config.from_object(Config)
 
@@ -53,30 +54,30 @@ def create_app():
     # ── Serve Frontend HTML Pages ──
     @app.route('/')
     def index():
-        return render_template('index.html')
+        return send_from_directory(FRONTEND_DIR, 'index.html')
     
     @app.route('/login')
     def login():
-        return render_template('login.html')
+        return send_from_directory(FRONTEND_DIR, 'login.html')
     
     @app.route('/register')
     def register():
-        return render_template('register.html')
+        return send_from_directory(FRONTEND_DIR, 'register.html')
     
     @app.route('/dashboard')
     def dashboard():
-        return render_template('dashboard.html')
+        return send_from_directory(FRONTEND_DIR, 'dashboard.html')
     
     @app.route('/profile')
     def profile():
-        return render_template('profile.html')
+        return send_from_directory(FRONTEND_DIR, 'profile.html')
     
     # ── Catch-all for SPA routing ──
     @app.route('/<path:path>')
     def catch_all(path):
-        if path and os.path.exists(os.path.join(app.template_folder, f'{path}.html')):
-            return render_template(f'{path}.html')
-        return render_template('index.html')
+        if path and os.path.exists(os.path.join(FRONTEND_DIR, f'{path}.html')):
+            return send_from_directory(FRONTEND_DIR, f'{path}.html')
+        return send_from_directory(FRONTEND_DIR, 'index.html')
 
     # ── Health check route ──
     @app.route('/api/health')
@@ -92,3 +93,4 @@ def create_app():
         return send_from_directory(os.path.join(app.config['UPLOAD_FOLDER'], 'documents'), filename)
 
     return app
+
