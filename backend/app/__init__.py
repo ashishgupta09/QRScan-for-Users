@@ -21,7 +21,7 @@ def create_app():
         __name__,
         static_folder=FRONTEND_DIR,
         static_url_path='',
-        template_folder=FRONTEND_DIR
+        template_folder=os.path.join(PACKAGE_DIR, 'templates')
     )
     app.config.from_object(Config)
 

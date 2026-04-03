@@ -128,7 +128,14 @@ def scan_qr(qr_token):
     if user.status != 'approved':
         return jsonify({'error': 'User is not approved. QR code is invalid.'}), 403
 
-    # Switch from JSON to a beautiful Scan Result Page
+    # Return JSON for API calls, HTML for browser requests
+    if request.headers.get('Accept') == 'application/json' or request.args.get('format') == 'json':
+        return jsonify({
+            'status': 'success',
+            'user': user.to_dict()
+        }), 200
+    
+    # Return HTML page for browser requests
     return render_template('scan_result.html', user=user)
 
 

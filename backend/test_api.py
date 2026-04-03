@@ -8,7 +8,7 @@ def sep(title):
 
 # 1. Health check
 sep("1. Health Check")
-r = requests.get(f"{BASE}/")
+r = requests.get(f"{BASE}/api/health")
 print(f"  Status: {r.status_code} | Body: {r.json()}")
 
 # 2. User registration (valid)
@@ -130,14 +130,16 @@ print(f"  Status: {r.status_code} | Message: {r.json().get('message')}")
 # 12. Scan QR (use the token from approval)
 sep("12. Scan QR Code (for approved user)")
 if scan_url:
-    r = requests.get(scan_url)
+    headers = {'Accept': 'application/json'}
+    r = requests.get(scan_url, headers=headers)
     print(f"  Status: {r.status_code} | User Details: {r.json()}")
 else:
     print("  Skipped - no scan URL available")
 
 # 13. Scan invalid QR
 sep("13. Scan Invalid QR Code")
-r = requests.get(f"{BASE}/api/admin/scan/invalidtoken123")
+headers = {'Accept': 'application/json'}
+r = requests.get(f"{BASE}/api/admin/scan/invalidtoken123", headers=headers)
 print(f"  Status: {r.status_code} | Error: {r.json().get('error')}")
 
 print(f"\n{'='*50}")
