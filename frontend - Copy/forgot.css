@@ -1,0 +1,94 @@
+.forgot-card {
+  width: min(960px, 100%);
+  background: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  padding: var(--spacing-4xl);
+  display: grid;
+  gap: var(--spacing-xl);
+}
+
+.forgot-hero h1 {
+  margin: 0 0 6px;
+}
+.forgot-hero p {
+  margin: 0;
+  color: #5a5a5a;
+}
+
+.forgot-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--spacing-xl);
+}
+
+.step-card {
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-xl);
+  background: #fafafa;
+  position: relative;
+}
+
+.step-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--primary-red);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  position: absolute;
+  top: -16px;
+  left: -16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.stack-form {
+  display: grid;
+  gap: var(--spacing-md);
+}
+
+.stack-form input {
+  width: 100%;
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--light-border);
+}
+
+.stack-form button {
+  padding: var(--spacing-lg);
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--primary-red);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.stack-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.field-hint {
+  color: #6a6a6a;
+  font-size: 0.85rem;
+}
+
+.back-link {
+  text-align: center;
+}
+
+.back-link a {
+  color: var(--primary-red);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .forgot-card {
+    padding: var(--spacing-3xl);
+  }
+}

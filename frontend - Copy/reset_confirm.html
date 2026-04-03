@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Set New Password</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./login.css" />
+    <link rel="stylesheet" href="./forgot.css" />
+  </head>
+  <body class="login-page">
+    <header class="site-header">
+      <div class="brand">
+        <span class="brand-icon">SOS</span>
+        <span class="brand-name">ResQr</span>
+      </div>
+      <nav class="site-nav">
+        <a href="./index.html">Home</a>
+        <a href="./register.html">Register</a>
+        <a href="./login.html">Login</a>
+      </nav>
+    </header>
+
+    <main class="page-body">
+      <section class="forgot-card single-col">
+        <div class="forgot-hero">
+          <h1>Create a new password</h1>
+          <p>Enter and confirm your new password to finish resetting.</p>
+        </div>
+
+        <form id="confirmResetForm" class="stack-form">
+          <input type="hidden" id="rcEmail" />
+          <input type="hidden" id="rcToken" />
+
+          <label for="rcNewPassword">New password</label>
+          <input
+            id="rcNewPassword"
+            type="password"
+            placeholder="At least 8 characters, letters & numbers"
+            autocomplete="new-password"
+            required
+          />
+          <label for="rcConfirmPassword">Confirm new password</label>
+          <input
+            id="rcConfirmPassword"
+            type="password"
+            placeholder="Repeat new password"
+            autocomplete="new-password"
+            required
+          />
+          <small class="field-hint">Must be 8+ characters and include letters and numbers.</small>
+
+          <button type="submit" id="resetBtn">Update password</button>
+          <p class="helper" id="rcStatus"></p>
+        </form>
+
+        <div class="back-link">
+          <a href="./login.html">&larr; Back to Login</a>
+        </div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+    <script src="./reset_confirm.js"></script>
+  </body>
+</html>

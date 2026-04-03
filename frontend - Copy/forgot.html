@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forgot Password</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./login.css" />
+    <link rel="stylesheet" href="./forgot.css" />
+  </head>
+  <body class="login-page">
+    <header class="site-header">
+      <div class="brand">
+        <span class="brand-icon">SOS</span>
+        <span class="brand-name">ResQr</span>
+      </div>
+      <nav class="site-nav">
+        <a href="./index.html">Home</a>
+        <a href="./register.html">Register</a>
+        <a href="./login.html">Login</a>
+      </nav>
+    </header>
+
+    <main class="page-body">
+      <section class="forgot-card">
+        <div class="forgot-hero">
+          <h1>Forgot Password?</h1>
+          <p>Enter your email, verify the OTP, then set a new password.</p>
+        </div>
+
+        <div class="forgot-steps">
+          <div class="step-card">
+            <div class="step-badge">1</div>
+            <h3>Get reset code</h3>
+            <form id="forgotRequestForm" class="stack-form">
+              <label for="fpEmail">Email address</label>
+              <input id="fpEmail" type="email" placeholder="you@example.com" autocomplete="email" required />
+              <button type="submit" id="sendCodeBtn">Send reset code</button>
+              <p class="helper" id="fpStatus"></p>
+            </form>
+          </div>
+
+          <div class="step-card">
+            <div class="step-badge">2</div>
+            <h3>Verify OTP</h3>
+            <form id="verifyTokenForm" class="stack-form">
+              <label for="fpToken">6-digit code</label>
+              <input id="fpToken" type="text" placeholder="Enter the code" autocomplete="one-time-code" required />
+              <small class="field-hint">Check your inbox (or spam) for the code.</small>
+
+              <label for="fpConfirmEmail">Email (for validation)</label>
+              <input id="fpConfirmEmail" type="email" placeholder="you@example.com" autocomplete="email" required />
+
+              <button type="submit" id="verifyBtn">Verify &amp; continue</button>
+              <p class="helper" id="fpResetStatus"></p>
+            </form>
+          </div>
+        </div>
+
+        <div class="back-link">
+          <a href="./login.html">&larr; Back to Login</a>
+        </div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+    <script src="./forgot.js"></script>
+  </body>
+</html>

@@ -194,6 +194,14 @@
   color: #7d7d7d;
   font-size: 0.94rem;
 }
+.login-hint a.inline-link {
+  color: var(--primary-red);
+  font-weight: 700;
+  text-decoration: none;
+}
+.login-hint a.inline-link:hover {
+  text-decoration: underline;
+}
 
 /* =========================================================================
    Responsive Design - Mobile (≤480px)
