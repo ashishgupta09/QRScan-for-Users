@@ -50,7 +50,6 @@ def register():
         'phone': phone,
         'dob': dob_str,
         'blood_group': blood_group,
-        'has_disease': has_disease_str,
     }
 
     for field, value in required_fields.items():
@@ -77,7 +76,10 @@ def register():
         return jsonify({'error': 'DOB must be in YYYY-MM-DD format'}), 400
 
     # ── Disease validation ──
-    has_disease = has_disease_str == 'yes'
+    truthy_values = {'yes', 'true', '1', 'on'}
+    falsy_values = {'no', 'false', '0', 'off'}
+    has_disease = has_disease_str in truthy_values
+    # If client sends an unknown value, default to False so registration still succeeds
     disease_doc_path = None
 
     if has_disease:
