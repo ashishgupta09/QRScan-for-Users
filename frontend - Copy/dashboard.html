@@ -52,15 +52,6 @@
       </table>
     </div>
     <script src="./app.js"></script>
-    <script>
-      // Show login success toast if redirected after login
-      (() => {
-        const params = new URLSearchParams(window.location.search);
-        if (params.get("login") === "success") {
-          showToast("Login successful", "success", 4000);
-        }
-      })();
-    </script>
     <script src="./admin.js"></script>
   </body>
 </html>

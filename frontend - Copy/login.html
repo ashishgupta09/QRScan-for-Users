@@ -1,76 +1,63 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
-    <link rel="stylesheet" href="./styles.css" />
-    <link rel="stylesheet" href="./login.css" />
-  </head>
-  <body class="login-page">
-    <header class="site-header">
-      <div class="brand">
-        <span class="brand-icon">SOS</span>
-        <span class="brand-name">ResQr</span>
-      </div>
-      <button
-        class="nav-toggle"
-        aria-label="Toggle navigation"
-        aria-expanded="false"
-      >
-        <span></span><span></span><span></span>
-      </button>
-      <nav class="site-nav">
-        <a href="./index.html">Home</a>
-        <a href="./register.html">Register</a>
-        <a class="nav-admin active" href="./login.html">Admin</a>
-      </nav>
-    </header>
 
-    <main class="page-body">
-      <section class="login-card">
-        <div class="card-header">
-          <h1 id="loginTitle">Login</h1>
-          <div class="role-toggle" role="tablist" aria-label="Choose role">
-            <button
-              type="button"
-              class="role-tab active"
-              data-role="user"
-              aria-selected="true"
-              role="tab"
-            >
-              User
-            </button>
-            <button
-              type="button"
-              class="role-tab"
-              data-role="admin"
-              aria-selected="false"
-              role="tab"
-            >
-              Admin
-            </button>
-          </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./login.css" />
+</head>
+
+<body class="login-page">
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-icon">SOS</span>
+      <span class="brand-name">ResQr</span>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="site-nav">
+      <a href="./index.html">Home</a>
+      <a href="./register.html">Register</a>
+      <a class="nav-admin active" href="./login.html">Admin</a>
+    </nav>
+  </header>
+
+  <main class="page-body">
+    <section class="login-card">
+      <div class="card-header">
+        <h1 id="loginTitle">Login</h1>
+        <div class="role-toggle" role="tablist" aria-label="Choose role">
+          <button type="button" class="role-tab" data-role="admin" aria-selected="false" role="tab">
+            Admin
+          </button>
+          <button type="button" class="role-tab active" data-role="user" aria-selected="true" role="tab">
+            User
+          </button>
         </div>
-        <form class="login-form" data-role="user">
-          <div class="form-group">
-            <label for="username">Email</label>
-            <input id="username" type="email" placeholder="you@example.com" />
-          </div>
+      </div>
+      <form class="login-form" data-role="user">
+        <div class="form-group">
+          <label for="username">Email</label>
+          <input id="username" type="email" placeholder="you@example.com" />
+        </div>
 
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input id="password" type="password" placeholder="Enter password" />
-          </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="password" type="password" placeholder="Enter password" />
+        </div>
 
-          <button type="submit">Login</button>
-          <p class="login-hint">
-            <a href="./forgot.html" class="inline-link">Forgot password?</a>
-          </p>
-        </form>
-      </section>
-    </main>
-    <script src="./app.js"></script>
-    <script src="./auth.js"></script>
-  </body>
+        <button type="submit">Login</button>
+        <p class="login-hint">
+          <a href="./forgot.html" class="inline-link">Forgot password?</a>
+        </p>
+      </form>
+    </section>
+  </main>
+  <script src="./app.js"></script>
+  <script src="./auth.js"></script>
+</body>
+
 </html>

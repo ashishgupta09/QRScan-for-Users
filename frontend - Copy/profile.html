@@ -4,18 +4,287 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile - ResQr</title>
+    <style>
+        main {
+            padding-top: 80px; /* Account for sticky header */
+        }
+    </style>
     <link rel="stylesheet" href="./styles.css">
     <link rel="stylesheet" href="./login.css">
     <style>
-        .profile-card { max-width: 600px; margin: 40px auto; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .profile-item { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
-        .profile-label { font-weight: bold; color: #555; }
-        .status-badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.9em; font-weight: bold; }
-        .status-badge.pending { background: #ff9800; color: white; }
-        .status-badge.approved { background: #4caf50; color: white; }
-        .status-badge.rejected { background: #f44336; color: white; }
-        .qr-section { margin-top: 20px; text-align: center; }
-        .qr-btn { background: #673AB7; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+        :root {
+            --primary-red: #ca2636;
+            --primary-light: #ff4d4d;
+            --success-green: #4caf50;
+            --warning-orange: #ff9800;
+            --error-red: #f44336;
+            --text-dark: #1a1a1a;
+            --text-muted: #666666;
+            --bg-light: #f8f9fa;
+            --white: #ffffff;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.16);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-light) 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+
+        .profile-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        .profile-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-top: 60px;
+        }
+
+        .profile-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        @media (min-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: var(--transition);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--primary-light) 100%);
+            color: var(--white);
+            padding: 24px;
+            text-align: center;
+        }
+
+        .card-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-red);
+            transition: var(--transition);
+        }
+
+        .info-item:hover {
+            background: #fff;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .info-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .info-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--white);
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.approved {
+            background: var(--success-green);
+            color: var(--white);
+        }
+
+        .status-badge.pending {
+            background: var(--warning-orange);
+            color: var(--white);
+        }
+
+        .status-badge.rejected {
+            background: var(--error-red);
+            color: var(--white);
+        }
+
+        .qr-card {
+            text-align: center;
+        }
+
+        .qr-placeholder {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 24px;
+            background: var(--bg-light);
+            border: 2px dashed #ddd;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .qr-placeholder svg {
+            width: 48px;
+            height: 48px;
+            stroke: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .qr-btn {
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--primary-light) 100%);
+            color: var(--white);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .qr-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .qr-btn:active {
+            transform: translateY(0);
+        }
+
+        .pending-message {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 16px;
+            color: #856404;
+            font-style: italic;
+            margin-top: 16px;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                padding: 16px;
+            }
+            
+            .profile-header h1 {
+                font-size: 2rem;
+            }
+            
+            .card-body {
+                padding: 16px;
+            }
+            
+            .info-item {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+            
+            .info-icon {
+                margin-right: 0;
+                margin-bottom: 12px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -33,15 +302,116 @@
         </nav>
     </header>
 
-    <main class="page-body">
-        <div class="profile-card">
+    <main class="profile-container">
+        <div class="profile-header">
             <h1>My Profile</h1>
-            <div id="profileContent">
-                <p>Loading your profile...</p>
+            <p>Manage your emergency medical information</p>
+        </div>
+
+        <div class="profile-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Personal Information</h2>
+                </div>
+                <div class="card-body">
+                    <div id="profileContent">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </div>
+                                <div class="info-content">
+                                    <div class="info-label">Name</div>
+                                    <div class="info-value">Loading...</div>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                        <polyline points="22,6 12,13 2,6"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="info-content">
+                                    <div class="info-label">Email</div>
+                                    <div class="info-value">Loading...</div>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                    </svg>
+                                </div>
+                                <div class="info-content">
+                                    <div class="info-label">Phone</div>
+                                    <div class="info-value">Loading...</div>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                    </svg>
+                                </div>
+                                <div class="info-content">
+                                    <div class="info-label">Status</div>
+                                    <div class="info-value">Loading...</div>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17 10V3a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v7m-7 4v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        <path d="M15 14l-3 3m0 0l-3-3m3 3V8"></path>
+                                    </svg>
+                                </div>
+                                <div class="info-content">
+                                    <div class="info-label">Blood Group</div>
+                                    <div class="info-value">Loading...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="qr-section" id="qrSection" style="display: none;">
-                <p>Your Emergency QR is ready!</p>
-                <button class="qr-btn" id="viewQrBtn">View My QR Code</button>
+
+            <div class="card qr-card">
+                <div class="card-header">
+                    <h2>Emergency QR Code</h2>
+                </div>
+                <div class="card-body">
+                    <div id="qrSection" style="display: none;">
+                        <div class="qr-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <rect x="7" y="7" width="3" height="3"></rect>
+                                <rect x="14" y="7" width="3" height="3"></rect>
+                                <rect x="14" y="14" width="3" height="3"></rect>
+                                <rect x="7" y="14" width="3" height="3"></rect>
+                                <rect x="10" y="10" width="4" height="4"></rect>
+                            </svg>
+                            <span>Your Emergency QR</span>
+                        </div>
+                        <h3 style="color: var(--success-green); margin-bottom: 16px;">✓ Your Emergency QR is ready!</h3>
+                        <button class="qr-btn" id="viewQrBtn">View My QR Code</button>
+                    </div>
+                    <div id="pendingSection" style="display: none;">
+                        <div class="qr-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            <span>Awaiting Approval</span>
+                        </div>
+                        <div class="pending-message">
+                            Your registration is pending admin approval. Your QR code will appear here once approved.
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>

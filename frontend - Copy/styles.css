@@ -428,6 +428,21 @@ body {
 }
 
 /* =========================================================================
+   Header Spacing Fix
+   ========================================================================= */
+main {
+  padding-top: 80px; /* Account for sticky header */
+}
+
+/* Override for pages that have their own padding */
+.page-body,
+.register-page body > .card,
+.hero-section {
+  padding-top: unset !important;
+  margin-top: unset !important;
+}
+
+/* =========================================================================
    ResQr Brand Standard Styles
    ========================================================================= */
 .site-header {

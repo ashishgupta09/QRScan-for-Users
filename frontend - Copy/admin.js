@@ -5,6 +5,14 @@ if (!token || localStorage.getItem("role") !== "admin") {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Check for login success parameter and show single toast
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("login") === "success") {
+    // Remove the login parameter from URL to prevent duplicate toasts on refresh
+    window.history.replaceState({}, document.title, window.location.pathname);
+    showToast("Login successful as Admin", "success", 4000);
+  }
+
   fetchUsers();
 
   // Close success overlay (if any)
