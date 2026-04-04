@@ -27,7 +27,7 @@ def register():
     """
     Register a new user with form-data (multipart).
     Required: email, password, name, address, phone, dob, blood_group, has_disease
-    Optional: alternate_phone. No file upload required even if disease=yes.
+    Optional: alternate_phone. Document required if has_disease=yes.
     """
     if request.is_json:
         data = request.get_json() or {}
@@ -73,7 +73,31 @@ def register():
     truthy_values = {'yes', 'true', '1', 'on'}
     falsy_values = {'no', 'false', '0', 'off'}
     has_disease = has_disease_str in truthy_values
-    disease_doc_path = None  # file not required
+    disease_doc_path = None
+
+    # Validate document requirement if disease=yes
+    if has_disease:
+        if 'disease_document' not in request.files:
+            return jsonify({'error': 'Medical document is required when disease condition is selected'}), 400
+        
+        doc_file = request.files['disease_document']
+        if doc_file.filename == '':
+            return jsonify({'error': 'Medical document is required when disease condition is selected'}), 400
+        
+        if not allowed_file(doc_file.filename):
+            return jsonify({'error': 'Invalid file type. Allowed types: PDF, PNG, JPG, JPEG, DOC, DOCX'}), 400
+        
+        # Save the document
+        filename = secure_filename(doc_file.filename)
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"{timestamp}_{filename}"
+        
+        doc_dir = os.path.join(current_app.config['UPLOAD_FOLDER'], 'documents')
+        os.makedirs(doc_dir, exist_ok=True)
+        
+        doc_path = os.path.join(doc_dir, filename)
+        doc_file.save(doc_path)
+        disease_doc_path = doc_path
 
     if User.query.filter_by(email=email).first():
         return jsonify({'error': 'Email already registered'}), 409

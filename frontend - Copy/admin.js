@@ -81,6 +81,12 @@ function renderUsers(users) {
             <td>${user.phone}</td>
             <td><span class="pill bloodPill">${user.blood_group}</span></td>
             <td>${user.has_disease ? "Yes" : "No"}</td>
+            <td>
+                ${user.has_disease && user.disease_document 
+                    ? `<button type="button" class="qrBtn" onclick="viewDocument('${user.disease_document}')">View Doc</button>` 
+                    : "-"
+                }
+            </td>
             <td><span class="pill statusPill ${statusClass}">${user.status.charAt(0).toUpperCase() + user.status.slice(1)}</span></td>
             <td>
                 ${statusClass === "approved" ? `<button type="button" class="qrBtn" onclick="viewQR('${user.qr_image_url}')">View QR</button>` : "-"}
@@ -133,12 +139,25 @@ async function updateStatus(id, action) {
   }
 }
 
+function viewDocument(documentPath) {
+  // Extract filename from path
+  const filename = documentPath.split('\\').pop().split('/').pop();
+  const documentUrl = `https://qrscan-for-users.onrender.com/uploads/documents/${filename}`;
+  
+  // Use document preview instead of direct download
+  if (window.showDocumentPreview) {
+    window.showDocumentPreview(documentUrl, filename);
+  } else {
+    // Fallback to direct opening if preview not available
+    window.open(documentUrl, '_blank');
+  }
+}
+
 function viewQR(qrImageUrl) {
-  if (!qrImageUrl) return;
-  const fullUrl = `https://qrscan-for-users.onrender.com${qrImageUrl}`;
-  window.open(fullUrl, "_blank");
+  window.open(`https://qrscan-for-users.onrender.com${qrImageUrl}`, "_blank");
 }
 
 // Make functions global for onclick events
 window.updateStatus = updateStatus;
 window.viewQR = viewQR;
+window.viewDocument = viewDocument;

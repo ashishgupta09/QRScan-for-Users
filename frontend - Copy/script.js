@@ -32,7 +32,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const toggleDiseaseFields = () => {
       if (!diseaseFields) return;
       const show = diseaseYes && diseaseYes.checked;
-      diseaseFields.classList.toggle("show", show);
+      
+      if (show) {
+        diseaseFields.style.display = "block";
+        diseaseFields.classList.add("show");
+      } else {
+        diseaseFields.style.display = "none";
+        diseaseFields.classList.remove("show");
+      }
       if (!show && diseaseDoc) {
         diseaseDoc.value = ""; // clear stale file when switching back to No
       }
@@ -161,9 +168,17 @@ document.addEventListener("DOMContentLoaded", () => {
         clearError("diseaseErr");
       }
 
-      // Disease document is optional even when "Yes" is selected.
-      const doc = document.getElementById("disease_document");
-      if (doc) {
+      // Disease document validation - mandatory if disease=yes
+      if (disease && disease.value === 'yes') {
+        const doc = document.getElementById("disease_document");
+        if (!doc || !doc.files || doc.files.length === 0) {
+          showError("docErr");
+          isValid = false;
+        } else {
+          clearError("docErr");
+        }
+      } else {
+        // Clear document error if disease=no
         clearError("docErr");
       }
 
@@ -220,14 +235,18 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("bloodGroup").value,
       );
 
+      // Attach document if disease=yes (mandatory)
       const hasDisease = document.querySelector(
         'input[name="disease"]:checked',
       ).value;
       formData.append("has_disease", hasDisease);
 
-      // Attach document only if provided (optional even when disease=yes)
-      const docFile = document.getElementById("disease_document").files[0];
-      if (docFile) {
+      if (hasDisease === 'yes') {
+        const docFile = document.getElementById("disease_document").files[0];
+        if (!docFile) {
+          showToast("Please upload a medical document", "error");
+          return;
+        }
         formData.append("disease_document", docFile);
       }
 

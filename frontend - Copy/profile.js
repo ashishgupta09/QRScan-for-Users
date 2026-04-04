@@ -67,7 +67,8 @@ function renderProfile(user) {
     user.email,
     user.phone,
     `<span class="status-badge ${statusClass}">${statusText}</span>`,
-    user.blood_group
+    user.blood_group,
+    user.has_disease ? '<span style="color: var(--error-red); font-weight: 600;">Yes</span>' : '<span style="color: var(--success-green); font-weight: 600;">No</span>'
   ];
 
   infoItems.forEach((item, index) => {
@@ -76,7 +77,7 @@ function renderProfile(user) {
     }
   });
 
-  // Show appropriate QR section
+  // Show appropriate QR section and medical document section
   if (user.status === "approved") {
     qrSection.style.display = "block";
     pendingSection.style.display = "none";
@@ -91,5 +92,27 @@ function renderProfile(user) {
   } else {
     qrSection.style.display = "none";
     pendingSection.style.display = "block";
+  }
+
+  // Show medical document section if user has disease and document
+  const medicalDocumentCard = document.getElementById("medicalDocumentCard");
+  if (user.has_disease && user.disease_document) {
+    medicalDocumentCard.style.display = "block";
+    const viewDocBtn = document.getElementById("viewDocBtn");
+    viewDocBtn.onclick = () => {
+      // Extract filename from path
+      const filename = user.disease_document.split('\\').pop().split('/').pop();
+      const documentUrl = `https://qrscan-for-users.onrender.com/uploads/documents/${filename}`;
+      
+      // Use document preview instead of direct download
+      if (window.showDocumentPreview) {
+        window.showDocumentPreview(documentUrl, filename);
+      } else {
+        // Fallback to direct opening if preview not available
+        window.open(documentUrl, '_blank');
+      }
+    };
+  } else {
+    medicalDocumentCard.style.display = "none";
   }
 }
