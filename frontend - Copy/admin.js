@@ -5,12 +5,16 @@ if (!token || localStorage.getItem("role") !== "admin") {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Check for login success parameter and show single toast
+  // Check for login success parameter and show toast only once
   const params = new URLSearchParams(window.location.search);
   if (params.get("login") === "success") {
     // Remove the login parameter from URL to prevent duplicate toasts on refresh
     window.history.replaceState({}, document.title, window.location.pathname);
-    showToast("Login successful as Admin", "success", 4000);
+    // Use sessionStorage to prevent duplicate toasts
+    if (!sessionStorage.getItem('loginToastShown')) {
+      showToast("Login successful as Admin", "success", 4000);
+      sessionStorage.setItem('loginToastShown', 'true');
+    }
   }
 
   fetchUsers();
@@ -33,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     logoutBtn.addEventListener("click", (e) => {
       e.preventDefault();
       localStorage.clear();
+      sessionStorage.clear(); // Clear sessionStorage to prevent duplicate toasts
       window.location.href = "./login.html";
     });
   }
