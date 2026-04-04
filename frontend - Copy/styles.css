@@ -455,6 +455,9 @@ main {
   top: 0;
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  left: 0;
+  right: 0;
 }
 
 .brand {
@@ -885,40 +888,49 @@ main {
 
   .site-header {
     padding: 12px 16px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .site-nav {
     position: fixed;
-    top: 64px;
-    right: 16px;
-    left: 16px;
+    top: 0;
+    left: 0;
+    right: 0;
     background: white;
-    border-radius: 14px;
-    box-shadow: var(--card-hover-shadow);
-    padding: 14px 12px;
+    border-radius: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    padding: 16px;
     flex-direction: column;
-    gap: 12px;
-    transform: translateY(-140%);
+    gap: 8px;
+    transform: translateY(-100%);
     opacity: 0;
     pointer-events: none;
-    transition: 0.25s ease;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .site-nav a {
     color: var(--text-dark);
-    padding: 10px 12px;
-    border-radius: 10px;
+    padding: 12px 16px;
+    border-radius: 8px;
     width: 100%;
+    text-align: center;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
   }
 
   .site-nav a:hover,
   .site-nav a.active {
-    background: rgba(220, 53, 70, 0.08);
-    color: var(--primary-red);
+    background: var(--primary-red);
+    color: white;
+    transform: translateX(4px);
   }
 
   .site-nav.open {
-    transform: translateY(0);
+    transform: translateY(64px);
     opacity: 1;
     pointer-events: all;
   }

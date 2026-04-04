@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.querySelector(".login-form");
   const roleTabs = document.querySelectorAll(".role-tab");
   const loginTitle = document.getElementById("loginTitle");
+  const adminNavLink = document.querySelector(".nav-admin");
   if (!loginForm) return;
 
   const endpoints = {
@@ -16,19 +17,43 @@ document.addEventListener("DOMContentLoaded", () => {
     if (submitBtn) submitBtn.textContent = role === "admin" ? "Login as Admin" : "Login as User";
   };
 
+  const selectRoleTab = (role) => {
+    roleTabs.forEach((tab) => {
+      const isActive = tab.dataset.role === role;
+      tab.classList.toggle("active", isActive);
+      tab.setAttribute("aria-selected", isActive ? "true" : "false");
+    });
+    updateRoleUI(role);
+  };
+
+  // Handle role tab clicks
   roleTabs.forEach((tab) => {
     tab.addEventListener("click", () => {
       const role = tab.dataset.role;
-      roleTabs.forEach((t) => {
-        t.classList.toggle("active", t === tab);
-        t.setAttribute("aria-selected", t === tab ? "true" : "false");
-      });
-      updateRoleUI(role);
+      selectRoleTab(role);
     });
   });
 
-  // Initialize default UI state
-  updateRoleUI(loginForm.dataset.role || "user");
+  // Handle Admin nav link click - auto-select admin role
+  if (adminNavLink) {
+    adminNavLink.addEventListener("click", (e) => {
+      // Only auto-select if we're already on login page
+      if (window.location.pathname.includes('login.html')) {
+        e.preventDefault();
+        selectRoleTab('admin');
+      }
+    });
+  }
+
+  // Check URL parameter for admin role
+  const urlParams = new URLSearchParams(window.location.search);
+  const adminParam = urlParams.get('admin');
+  if (adminParam === 'true') {
+    selectRoleTab('admin');
+  } else {
+    // Initialize default UI state - Admin is now default
+    selectRoleTab('admin');
+  }
 
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();

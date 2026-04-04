@@ -30,15 +30,15 @@
       <div class="card-header">
         <h1 id="loginTitle">Login</h1>
         <div class="role-toggle" role="tablist" aria-label="Choose role">
-          <button type="button" class="role-tab" data-role="admin" aria-selected="false" role="tab">
+          <button type="button" class="role-tab active" data-role="admin" aria-selected="true" role="tab">
             Admin
           </button>
-          <button type="button" class="role-tab active" data-role="user" aria-selected="true" role="tab">
+          <button type="button" class="role-tab" data-role="user" aria-selected="false" role="tab">
             User
           </button>
         </div>
       </div>
-      <form class="login-form" data-role="user">
+      <form class="login-form" data-role="admin">
         <div class="form-group">
           <label for="username">Email</label>
           <input id="username" type="email" placeholder="you@example.com" />
